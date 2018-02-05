@@ -37,6 +37,10 @@ public class AppLogo {
         }
 
         stage.getIcons().clear();
-        stage.getIcons().add(new Image(AppLogo.class.getResourceAsStream(path)));
+        stage.getIcons().add(getLogo());
+    }
+
+    public static Image getLogo() {
+        return new Image(AppLogo.class.getResourceAsStream(path));
     }
 }
