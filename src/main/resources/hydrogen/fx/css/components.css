@@ -1,0 +1,13 @@
+.dialog-root {
+    -fx-padding: 10;
+    -fx-spacing: 10;
+}
+
+.dialog-body {
+    -fx-spacing: 10;
+}
+
+.dialog-buttons {
+    -fx-spacing: 10;
+    -fx-alignment: baseline-right;
+}

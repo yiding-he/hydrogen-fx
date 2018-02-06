@@ -19,14 +19,14 @@ import java.io.IOException;
  */
 public class DialogCreator {
 
-    public static <T> T openDialog(String fxml) throws IOException {
+    public static <T> T openDialog(String fxml, String title) throws IOException {
         Stage owner = AppPrimaryStage.getPrimaryStage();
         Image logo = AppLogo.getLogo();
 
-        return openDialog(fxml, owner, logo);
+        return openDialog(fxml, title, owner, logo);
     }
 
-    public static <T> T openDialog(String fxml, Stage owner, Image icon) throws IOException {
+    public static <T> T openDialog(String fxml, String title, Stage owner, Image icon) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(DialogCreator.class.getResource(fxml));
 
@@ -34,6 +34,7 @@ public class DialogCreator {
         T t = fxmlLoader.getController();
 
         Stage stage = new Stage();
+        stage.setTitle(title);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(owner);
         stage.getIcons().add(icon);

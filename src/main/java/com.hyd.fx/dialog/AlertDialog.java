@@ -24,6 +24,10 @@ public class AlertDialog {
 
     private static final Logger LOG = LoggerFactory.getLogger(AlertDialog.class);
 
+    public static void error(String message) {
+        alert(Alert.AlertType.ERROR, "错误", message);
+    }
+
     public static void error(String title, String message) {
         alert(Alert.AlertType.ERROR, title, message);
     }

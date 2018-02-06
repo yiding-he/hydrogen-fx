@@ -5,6 +5,8 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.InputStream;
+
 /**
  * (description)
  * created at 2018/2/1
@@ -41,6 +43,15 @@ public class AppLogo {
     }
 
     public static Image getLogo() {
-        return new Image(AppLogo.class.getResourceAsStream(path));
+        if (StringUtils.isBlank(path)) {
+            return null;
+        }
+
+        InputStream resource = AppLogo.class.getResourceAsStream(path);
+        if (resource == null) {
+            return null;
+        }
+
+        return new Image(resource);
     }
 }
