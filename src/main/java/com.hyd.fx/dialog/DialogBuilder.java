@@ -1,14 +1,19 @@
 package com.hyd.fx.dialog;
 
 import com.hyd.fx.Fxml;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -37,6 +42,8 @@ public class DialogBuilder {
 
     private Map<ButtonType, Consumer<ActionEvent>> buttonHandlerMap = new HashMap<>();
 
+    private EventHandler<DialogEvent> onStageShown;
+
     private List<ButtonType> buttons = new ArrayList<>();
 
     public DialogBuilder() {
@@ -44,6 +51,11 @@ public class DialogBuilder {
 
     public DialogBuilder logo(Image logo) {
         this.logo = logo;
+        return this;
+    }
+
+    public DialogBuilder onStageShown(EventHandler<DialogEvent> onStageShown) {
+        this.onStageShown = onStageShown;
         return this;
     }
 
@@ -142,6 +154,19 @@ public class DialogBuilder {
             buttons.addAll(Arrays.asList(
                     ButtonType.OK, ButtonType.CANCEL
             ));
+        }
+
+        if (onStageShown != null) {
+            dialog.setOnShown(event -> {
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        // nothing to do
+                    }
+                    Platform.runLater(() -> onStageShown.handle(event));
+                }).start();
+            });
         }
 
         Window window = dialog.getDialogPane().getScene().getWindow();
