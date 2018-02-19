@@ -5,6 +5,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCombination;
 
 /**
  * (description)
@@ -30,18 +31,28 @@ public class MenuBuilder {
     }
 
     public static MenuItem menuItem(String name, Runnable action) {
-        MenuItem menuItem = new MenuItem(name);
-        menuItem.setOnAction(event -> action.run());
-        return menuItem;
+        return menuItem(name, null, null, action);
     }
 
-    public static MenuItem menuItem(String name, Image icon, Runnable action) {
+    public static MenuItem menuItem(String name, String accelerator, Runnable action) {
+        return menuItem(name, null, accelerator, action);
+    }
+
+    public static MenuItem menuItem(String name, Image icon, String accelerator, Runnable action) {
         MenuItem menuItem = new MenuItem(name);
         menuItem.setOnAction(event -> action.run());
-        ImageView imageView = new ImageView(icon);
-        imageView.setFitWidth(16);
-        imageView.setFitHeight(16);
-        menuItem.setGraphic(imageView);
+
+        if (icon != null) {
+            ImageView imageView = new ImageView(icon);
+            imageView.setFitWidth(16);
+            imageView.setFitHeight(16);
+            menuItem.setGraphic(imageView);
+        }
+
+        if (accelerator != null) {
+            menuItem.setAccelerator(KeyCombination.valueOf(accelerator));
+        }
+
         return menuItem;
     }
 }
