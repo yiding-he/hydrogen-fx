@@ -3,7 +3,6 @@ package com.hyd.fx.dialog;
 import com.hyd.fx.Fxml;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.stage.WindowEvent;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -29,6 +27,8 @@ public class DialogBuilder {
     private Parent dialogBody;
 
     private String dialogBodyFxml;
+
+    private String css;
 
     private String title;
 
@@ -106,6 +106,11 @@ public class DialogBuilder {
         return this;
     }
 
+    public DialogBuilder css(String css) {
+        this.css = css;
+        return this;
+    }
+
     public DialogBuilder owner(Stage owner) {
         this.owner = owner;
         return this;
@@ -148,6 +153,10 @@ public class DialogBuilder {
             Parent _dialogBody = loader.getRoot();
             _dialogBody.getStyleClass().add("dialog-body");
             dialog.getDialogPane().setContent(_dialogBody);
+        }
+
+        if (css != null) {
+            dialog.getDialogPane().getStylesheets().add(css);
         }
 
         if (buttons.isEmpty()) {
