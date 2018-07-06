@@ -6,21 +6,42 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 /**
- * (description)
- * created at 2017/6/2
+ * 帮助快速设置界面元素样式的工具类
  *
  * @author yidin
  */
 public class FxStyle {
 
+    /**
+     * 生成一个背景对象
+     *
+     * @param webColor 背景色
+     *
+     * @return 背景对象
+     */
     public static Background background(String webColor) {
         return background(Color.web(webColor));
     }
 
+    /**
+     * 生成一个背景对象
+     *
+     * @param color 背景色
+     *
+     * @return 背景对象
+     */
     public static Background background(Paint color) {
         return new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
     }
 
+    /**
+     * 生成一个边框对象
+     *
+     * @param color 边框颜色
+     * @param width 边框厚度
+     *
+     * @return 边框对象
+     */
     public static Border border(Paint color, double width) {
         return border(color, width, BorderStrokeStyle.SOLID);
     }

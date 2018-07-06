@@ -149,7 +149,9 @@ public class DialogBuilder {
             dialog.getDialogPane().setContent(dialogBody);
 
         } else if (dialogBodyFxml != null) {
-            FXMLLoader loader = controller == null? Fxml.load(dialogBodyFxml): Fxml.load(dialogBodyFxml, controller);
+            FXMLLoader loader = controller == null?
+                    Fxml.load(dialogBodyFxml): Fxml.load(dialogBodyFxml, controller);
+
             Parent _dialogBody = loader.getRoot();
             _dialogBody.getStyleClass().add("dialog-body");
             dialog.getDialogPane().setContent(_dialogBody);
@@ -171,7 +173,7 @@ public class DialogBuilder {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
-                        // nothing to do
+                        // 如果执行得过快会导致一些操作无法生效
                     }
                     Platform.runLater(() -> onStageShown.handle(event));
                 }).start();

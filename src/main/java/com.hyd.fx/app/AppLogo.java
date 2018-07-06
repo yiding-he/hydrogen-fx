@@ -1,11 +1,10 @@
 package com.hyd.fx.app;
 
+import com.hyd.fx.FxUI;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apache.commons.lang3.StringUtils;
-
-import java.io.InputStream;
 
 /**
  * (description)
@@ -43,15 +42,6 @@ public class AppLogo {
     }
 
     public static Image getLogo() {
-        if (StringUtils.isBlank(path)) {
-            return null;
-        }
-
-        InputStream resource = AppLogo.class.getResourceAsStream(path);
-        if (resource == null) {
-            return null;
-        }
-
-        return new Image(resource);
+        return FxUI.image(path);
     }
 }

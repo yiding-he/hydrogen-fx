@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * (description)
- * created at 2018/2/6
+ * 基础对话框的抽象类。子类可以在构造方法中使用 DialogBuilder 来初始化自己。
+ * TODO 这个使用方式需要修改
  *
  * @author yidin
  */
