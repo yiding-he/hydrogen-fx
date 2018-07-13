@@ -38,6 +38,10 @@ public class MenuBuilder {
         return menuItem(name, null, accelerator, action);
     }
 
+    public static MenuItem menuItem(String name, Image icon, Runnable action) {
+        return menuItem(name, icon, null, action);
+    }
+
     public static MenuItem menuItem(String name, Image icon, String accelerator, Runnable action) {
         MenuItem menuItem = new MenuItem(name);
         menuItem.setOnAction(event -> action.run());
