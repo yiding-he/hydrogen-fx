@@ -3,6 +3,7 @@ package com.hyd.fx.cells;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -10,11 +11,11 @@ import java.util.function.Function;
  */
 public class ListCellFactoryBuilder<T> {
 
-    private Runnable onDoubleClick;
+    private Consumer<T> onDoubleClick;
 
     private Function<T, String> toString;
 
-    public ListCellFactoryBuilder<T> setOnDoubleClick(Runnable onDoubleClick) {
+    public ListCellFactoryBuilder<T> setOnDoubleClick(Consumer<T> onDoubleClick) {
         this.onDoubleClick = onDoubleClick;
         return this;
     }
@@ -44,7 +45,7 @@ public class ListCellFactoryBuilder<T> {
             if (onDoubleClick != null) {
                 listCell.setOnMouseClicked(event -> {
                     if (!listCell.isEmpty() && event.getClickCount() == 2) {
-                        onDoubleClick.run();
+                        onDoubleClick.accept(listCell.getItem());
                     }
                 });
             }

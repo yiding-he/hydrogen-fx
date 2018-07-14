@@ -118,19 +118,28 @@ public class NodeUtils {
 
     @SuppressWarnings("unchecked")
     public static void setUserData(Node node, String key, Object value) {
-        if (key == null || value == null || node == null) {
+
+        if (key == null || node == null) {
             return;
         }
 
         Map<String, Object> map;
 
         if (node.getUserData() == null || !(node.getUserData() instanceof Map)) {
-            map = new HashMap<>();
-            node.setUserData(map);
+            if (value != null) {
+                map = new HashMap<>();
+                node.setUserData(map);
+            } else {
+                return;
+            }
         } else {
             map = (Map<String, Object>) node.getUserData();
         }
 
-        map.put(key, value);
+        if (value != null) {
+            map.put(key, value);
+        } else {
+            map.remove(key);
+        }
     }
 }
