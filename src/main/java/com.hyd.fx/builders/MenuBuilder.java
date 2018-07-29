@@ -1,4 +1,4 @@
-package com.hyd.fx.components;
+package com.hyd.fx.builders;
 
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;

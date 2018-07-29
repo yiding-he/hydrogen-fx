@@ -1,6 +1,6 @@
 package com.hyd.fx.app;
 
-import com.hyd.fx.FxUI;
+import com.hyd.fx.builders.ImageBuilder;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -42,6 +42,6 @@ public class AppLogo {
     }
 
     public static Image getLogo() {
-        return FxUI.image(path);
+        return ImageBuilder.image(path);
     }
 }

@@ -1,17 +1,13 @@
 package com.hyd.fx.dialog;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogEvent;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import static com.hyd.fx.FxUI.button;
-import static com.hyd.fx.FxUI.image;
+import static com.hyd.fx.builders.ButtonBuilder.button;
+import static com.hyd.fx.builders.ImageBuilder.image;
 
 /**
  * @author yiding.he
