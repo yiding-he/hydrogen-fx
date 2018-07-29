@@ -7,6 +7,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import static com.hyd.fx.builders.TreeBuilder.treeItem;
 import static org.junit.Assert.*;
 
 /**
@@ -17,13 +18,23 @@ public class FilterableTreeViewTest extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FilterableTreeView<String> treeView = new FilterableTreeView<>();
-        TreeItem<String> root = new TreeItem<>("HAHAHAHAHA");
-        root.getChildren().addAll(
-                new TreeItem<>("12345"),
-                new TreeItem<>("123456"),
-                new TreeItem<>("1234567")
+        TreeItem<String> root = treeItem("root",
+                treeItem("node1",
+                        treeItem("node11"),
+                        treeItem("node12",
+                                treeItem("node121"),
+                                treeItem("node122"),
+                                treeItem("node123"),
+                                treeItem("node124")
+                        ),
+                        treeItem("node13")
+                ),
+                treeItem("node2",
+                        treeItem("node21"),
+                        treeItem("node22")
+                ),
+                treeItem("node3")
         );
-
         treeView.setOriginalRoot(root);
 
         TextField textField = new TextField();
