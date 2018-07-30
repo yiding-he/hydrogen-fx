@@ -47,10 +47,7 @@ public class MenuBuilder {
         menuItem.setOnAction(event -> action.run());
 
         if (icon != null) {
-            ImageView imageView = new ImageView(icon);
-            imageView.setFitWidth(16);
-            imageView.setFitHeight(16);
-            menuItem.setGraphic(imageView);
+            menuItem.setGraphic(ImageBuilder.imageView(icon, 16));
         }
 
         if (accelerator != null) {

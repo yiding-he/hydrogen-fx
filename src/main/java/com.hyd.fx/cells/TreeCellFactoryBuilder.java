@@ -1,7 +1,11 @@
 package com.hyd.fx.cells;
 
+import com.hyd.fx.builders.ImageBuilder;
 import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -15,6 +19,8 @@ public class TreeCellFactoryBuilder<T> {
 
     private Function<T, String> toString;
 
+    private Function<TreeItem<T>, Image> iconSupplier;
+
     public TreeCellFactoryBuilder<T> setOnDoubleClick(Consumer<T> onDoubleClick) {
         this.onDoubleClick = onDoubleClick;
         return this;
@@ -22,6 +28,11 @@ public class TreeCellFactoryBuilder<T> {
 
     public TreeCellFactoryBuilder<T> setToString(Function<T, String> toString) {
         this.toString = toString;
+        return this;
+    }
+
+    public TreeCellFactoryBuilder<T> setIconSupplier(Function<TreeItem<T>, Image> iconSupplier) {
+        this.iconSupplier = iconSupplier;
         return this;
     }
 
@@ -35,9 +46,22 @@ public class TreeCellFactoryBuilder<T> {
 
                     if (empty) {
                         setText(null);
+                        setGraphic(null);
                     } else {
-                        setText(toString.apply(item));
+                        setCellText(item);
+                        setCellIcon(this.getTreeItem());
                     }
+                }
+
+                private void setCellIcon(TreeItem<T> treeItem) {
+                    if (iconSupplier != null) {
+                        Image image = iconSupplier.apply(treeItem);
+                        setGraphic(ImageBuilder.imageView(image, 16));
+                    }
+                }
+
+                private void setCellText(T item) {
+                    setText(toString != null? toString.apply(item): String.valueOf(item));
                 }
             };
 
