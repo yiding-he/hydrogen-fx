@@ -26,23 +26,35 @@ public class MenuBuilder {
         return new Menu(name, null, menuItems);
     }
 
+    ////////////////////////////////////////////////////////////
+
     public static ContextMenu contextMenu(MenuItem... menus) {
         return new ContextMenu(menus);
     }
 
+    ////////////////////////////////////////////////////////////
+
     public static MenuItem menuItem(String name, Runnable action) {
-        return menuItem(name, null, null, action);
+        return menuItem(name, null, null, action, false);
     }
 
     public static MenuItem menuItem(String name, String accelerator, Runnable action) {
-        return menuItem(name, null, accelerator, action);
+        return menuItem(name, null, accelerator, action, false);
     }
 
     public static MenuItem menuItem(String name, Image icon, Runnable action) {
-        return menuItem(name, icon, null, action);
+        return menuItem(name, icon, null, action, false);
+    }
+
+    public static MenuItem menuItem(String name, Image icon, Runnable action, boolean disabled) {
+        return menuItem(name, icon, null, action, disabled);
     }
 
     public static MenuItem menuItem(String name, Image icon, String accelerator, Runnable action) {
+        return menuItem(name, icon, accelerator, action, false);
+    }
+
+    public static MenuItem menuItem(String name, Image icon, String accelerator, Runnable action, boolean disabled) {
         MenuItem menuItem = new MenuItem(name);
         menuItem.setOnAction(event -> action.run());
 
@@ -54,6 +66,7 @@ public class MenuBuilder {
             menuItem.setAccelerator(KeyCombination.valueOf(accelerator));
         }
 
+        menuItem.setDisable(disabled);
         return menuItem;
     }
 }
