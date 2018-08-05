@@ -1,4 +1,4 @@
-package com.hyd.fx.cells;
+package com.hyd.fx.helpers;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.scene.control.TableColumn;

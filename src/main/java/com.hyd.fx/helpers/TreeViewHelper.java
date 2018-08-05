@@ -1,4 +1,4 @@
-package com.hyd.fx.cells;
+package com.hyd.fx.helpers;
 
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
