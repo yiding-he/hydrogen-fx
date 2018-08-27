@@ -1,7 +1,9 @@
 package com.hyd.fx.attachable;
 
 import com.hyd.fx.NodeUtils;
+import com.hyd.fx.utils.Nums;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Side;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -121,13 +123,11 @@ public class Resizable extends Attachable<Region> {
         double x = mouseEvent.getX();
         double y = mouseEvent.getY();
 
-        double minX = MOUSE_SENSOR_MARGIN;
-        double minY = MOUSE_SENSOR_MARGIN;
         double maxX = node.getPrefWidth() - MOUSE_SENSOR_MARGIN;
         double maxY = node.getPrefHeight() - MOUSE_SENSOR_MARGIN;
 
         return NodeUtils.isInArea(x, y, 0, node.getPrefWidth(), 0, node.getPrefHeight()) &&
-                !NodeUtils.isInArea(x, y, minX, maxX, minY, maxY);
+                !NodeUtils.isInArea(x, y, MOUSE_SENSOR_MARGIN, maxX, MOUSE_SENSOR_MARGIN, maxY);
     }
 
     private void onMouseMoved(MouseEvent mouseEvent, Region node) {
@@ -162,8 +162,6 @@ public class Resizable extends Attachable<Region> {
         double x = mouseEvent.getX();
         double y = mouseEvent.getY();
 
-        double minX = MOUSE_SENSOR_MARGIN;
-        double minY = MOUSE_SENSOR_MARGIN;
         double maxX = node.getPrefWidth() - MOUSE_SENSOR_MARGIN;
 
         if (!isInResizeArea(mouseEvent, node)) {
@@ -175,11 +173,11 @@ public class Resizable extends Attachable<Region> {
         this.dragStartNodeSize = new double[]{node.getPrefWidth(), node.getPrefHeight()};
         this.dragStartMousePosition = getMousePositionInParent(mouseEvent);
 
-        if (x <= minX) {
+        if (x <= MOUSE_SENSOR_MARGIN) {
             this.draggingSide = Side.LEFT;
         } else if (x >= maxX) {
             this.draggingSide = Side.RIGHT;
-        } else if (y <= minY) {
+        } else if (y <= MOUSE_SENSOR_MARGIN) {
             this.draggingSide = Side.TOP;
         } else {
             this.draggingSide = Side.BOTTOM;
@@ -205,26 +203,46 @@ public class Resizable extends Attachable<Region> {
         }
 
         double[] mousePosition = getMousePositionInParent(mouseEvent);
+        Bounds parentBounds = node.getParent().getLayoutBounds();
+
+        double minDeltaX;
+        double minDeltaY;
+        double maxDeltaX;
+        double maxDeltaY;
+
+        double deltaX = mousePosition[0] - this.dragStartMousePosition[0];
+        double deltaY = mousePosition[1] - this.dragStartMousePosition[1];
+
 
         if (this.draggingSide == Side.BOTTOM) {
-            double newHeight = this.dragStartNodeSize[1] + (mousePosition[1] - this.dragStartMousePosition[1]);
+            minDeltaY = -dragStartNodeSize[1];
+            maxDeltaY = parentBounds.getHeight() - dragStartNodePosition[1] - dragStartNodeSize[1];
+            deltaY = Nums.between(deltaY, minDeltaY, maxDeltaY);
+            double newHeight = this.dragStartNodeSize[1] + deltaY;
             node.setPrefHeight(Math.max(newHeight, MIN_HEIGHT));
 
         } else if (this.draggingSide == Side.TOP) {
-            double heightDelta = mousePosition[1] - this.dragStartMousePosition[1];
-            double newHeight = Math.max(dragStartNodeSize[1] - heightDelta, MIN_HEIGHT);
+            minDeltaY = -dragStartNodePosition[1];
+            maxDeltaY = dragStartNodeSize[1];
+            deltaY = Nums.between(deltaY, minDeltaY, maxDeltaY);
+            double newHeight = Math.max(dragStartNodeSize[1] - deltaY, MIN_HEIGHT);
             node.setLayoutY(dragStartNodePosition[1] + dragStartNodeSize[1] - newHeight);
             node.setPrefHeight(newHeight);
 
+        } else if (this.draggingSide == Side.RIGHT) {
+            minDeltaX = -dragStartNodeSize[0];
+            maxDeltaX = parentBounds.getWidth() - dragStartNodePosition[0] - dragStartNodeSize[0];
+            deltaX = Nums.between(deltaX, minDeltaX, maxDeltaX);
+            double newWidth = this.dragStartNodeSize[0] + deltaX;
+            node.setPrefWidth(Math.max(newWidth, MIN_HEIGHT));
+
         } else if (this.draggingSide == Side.LEFT) {
-            double widthDelta = mousePosition[0] - this.dragStartMousePosition[0];
-            double newWidth = Math.max(dragStartNodeSize[0] - widthDelta, MIN_HEIGHT);
+            minDeltaX = -dragStartNodePosition[0];
+            maxDeltaX = dragStartNodeSize[0];
+            deltaX = Nums.between(deltaX, minDeltaX, maxDeltaX);
+            double newWidth = Math.max(dragStartNodeSize[0] - deltaX, MIN_HEIGHT);
             node.setLayoutX(dragStartNodePosition[0] + dragStartNodeSize[0] - newWidth);
             node.setPrefWidth(newWidth);
-
-        } else if (this.draggingSide == Side.RIGHT) {
-            double newWidth = this.dragStartNodeSize[0] + (mousePosition[0] - this.dragStartMousePosition[0]);
-            node.setPrefWidth(Math.max(newWidth, MIN_HEIGHT));
         }
     }
 

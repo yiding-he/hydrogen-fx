@@ -170,7 +170,7 @@ public class Draggable extends Attachable<Node> {
         this.draggingStatus = DraggingStatus.MouseDragging;
 
         forOtherNodes(node, _node ->
-                startNodePositions.put(_node, new double[]{_node.getLayoutX(), _node.getLayoutY()}));
+                startNodePositions.put(_node, NodeUtils.getNodePosition(_node)));
 
         if (this.onDragStarted != null) {
             this.onDragStarted.run();

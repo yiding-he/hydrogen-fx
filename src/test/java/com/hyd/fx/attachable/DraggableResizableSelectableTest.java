@@ -22,6 +22,10 @@ public class DraggableResizableSelectableTest extends AttachableTestBase {
         pane.setBackground(FxStyle.background("#FFFFFF"));
         root.getChildren().add(pane);
 
+        root.setOnKeyPressed(event -> {
+
+        });
+
         // 使 pane 可拖动
         Draggable.attachTo(pane);
 

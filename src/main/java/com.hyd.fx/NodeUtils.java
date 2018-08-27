@@ -103,8 +103,7 @@ public class NodeUtils {
     }
 
     public static double[] getNodePosition(Node node) {
-        Bounds bounds = node.getBoundsInParent();
-        return new double[]{bounds.getMinX(), bounds.getMinY()};
+        return new double[]{node.getLayoutX(), node.getLayoutY()};
     }
 
     @SuppressWarnings("unchecked")

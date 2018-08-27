@@ -21,7 +21,7 @@ public class ScrollPaneDraggableTest extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/demo.jpg")));
+        ImageView imageView = new ImageView(new Image("https://desk-fd.zol-img.com.cn/t_s1024x768c5/g5/M00/0F/07/ChMkJlauymeIYMI3AAhS3aKLXp4AAH8tQD5_3oACFL1729.jpg"));
         Pane content = new Pane(imageView);
         imageView.toBack();
 
