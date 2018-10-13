@@ -56,6 +56,8 @@ public class SelectionArea extends Pane {
 
     private MouseButton effectiveMouseButton = DEFAULT_EFFECTIVE_MOUSE_BUTTON;
 
+    private boolean autoHide = true;
+
     public SelectionArea() {
         initControl();
     }
@@ -79,6 +81,11 @@ public class SelectionArea extends Pane {
 
     public SelectionArea minSelectionSize(double minSelectionSize) {
         this.minSelectionSize = minSelectionSize;
+        return this;
+    }
+
+    public SelectionArea autoHide(boolean autoHide) {
+        this.autoHide = autoHide;
         return this;
     }
 
@@ -173,7 +180,9 @@ public class SelectionArea extends Pane {
 
         if (validateSize()) {
             onSelectionCreated();
-        } else {
+        }
+
+        if (autoHide) {
             this.setVisible(false);
         }
     }
@@ -233,7 +242,9 @@ public class SelectionArea extends Pane {
         Size thisSize = NodeUtils.getNodeSize(this);
         Size nodeSize = NodeUtils.getNodeSize(node);
 
-        double xm1 = thisPosition[0], xm2 = nodePosition[0], ym1 = thisPosition[1], ym2 = nodePosition[1];
+        double xm1 = thisPosition[0], xm2 = nodePosition[0],
+                ym1 = thisPosition[1], ym2 = nodePosition[1];
+
         double xx1 = xm1 + thisSize.getWidth(), xx2 = xm2 + nodeSize.getWidth(),
                 yx1 = ym1 + thisSize.getHeight(), yx2 = ym2 + nodeSize.getHeight();
 
@@ -262,7 +273,8 @@ public class SelectionArea extends Pane {
     }
 
     private boolean validateSize() {
-        return this.getLayoutBounds().getWidth() >= minSelectionSize &&
-                this.getLayoutBounds().getHeight() >= minSelectionSize;
+        double nodeWidth = NodeUtils.getNodeWidth(this);
+        double nodeHeight = NodeUtils.getNodeHeight(this);
+        return nodeWidth >= minSelectionSize && nodeHeight >= minSelectionSize;
     }
 }

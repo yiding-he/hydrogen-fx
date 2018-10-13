@@ -51,7 +51,11 @@ public class FxStyle {
     }
 
     public static Border dashedBorder(String color) {
-        return new Border(new BorderStroke(Color.web(color),
+        return dashedBorder(Color.web(color));
+    }
+
+    public static Border dashedBorder(Paint color) {
+        return new Border(new BorderStroke(color,
                 BorderStrokeStyle.DASHED, CornerRadii.EMPTY, new BorderWidths(1)));
     }
 
