@@ -3,6 +3,7 @@ package com.hyd.fx.attachable;
 import javafx.application.Application;
 import javafx.scene.layout.Pane;
 
+import static com.hyd.fx.style.FxStyle.background;
 import static com.hyd.fx.style.FxStyle.dashedBorder;
 
 /**
@@ -10,12 +11,21 @@ import static com.hyd.fx.style.FxStyle.dashedBorder;
  */
 public abstract class AttachableTestBase extends Application {
 
-    protected Pane createDemoPane() {
-        Pane resizablePane = new Pane();
-        resizablePane.setBorder(dashedBorder("#FF0000"));
-        resizablePane.setPrefSize(100, 100);
-        resizablePane.setLayoutX(110);
-        resizablePane.setLayoutY(110);
-        return resizablePane;
+    protected Pane createDemoPane(int x, int y) {
+        Pane pane = new Pane();
+        pane.setBorder(dashedBorder("#FF0000"));
+        pane.setPrefSize(100, 100);
+        pane.setLayoutX(x);
+        pane.setLayoutY(y);
+        return pane;
+    }
+
+    protected Pane square(double x, double y, double size, String color) {
+        Pane pane = new Pane();
+        pane.setBackground(background(color));
+        pane.setPrefSize(size, size);
+        pane.setLayoutX(x);
+        pane.setLayoutY(y);
+        return pane;
     }
 }

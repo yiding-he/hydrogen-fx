@@ -3,8 +3,7 @@ package com.hyd.fx.app;
 import javafx.stage.Stage;
 
 /**
- * (description)
- * created at 2018/2/5
+ * 存放主窗体的静态变量。没有其他的作用。
  *
  * @author yidin
  */

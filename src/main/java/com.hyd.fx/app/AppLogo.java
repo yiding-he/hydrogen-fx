@@ -1,14 +1,15 @@
 package com.hyd.fx.app;
 
 import com.hyd.fx.builders.ImageBuilder;
+import com.hyd.fx.utils.NotNull;
+import com.hyd.fx.utils.Nullable;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * (description)
- * created at 2018/2/1
+ * 设置全局的窗体图标，调用 setStageLogo() 方法将图标应用到窗体上。
  *
  * @author yidin
  */
@@ -32,15 +33,19 @@ public class AppLogo {
         }
     }
 
-    public static void setStageLogo(Stage stage) {
+    public static void setStageLogo(@NotNull Stage stage) {
         if (StringUtils.isBlank(path)) {
             return;
         }
 
-        stage.getIcons().clear();
-        stage.getIcons().add(getLogo());
+        Image logo = getLogo();
+        if (logo != null) {
+            stage.getIcons().clear();
+            stage.getIcons().add(logo);
+        }
     }
 
+    @Nullable
     public static Image getLogo() {
         return ImageBuilder.image(path);
     }

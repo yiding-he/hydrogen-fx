@@ -12,7 +12,7 @@ public class ResizableTest extends AttachableTestBase {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Pane root = new Pane();
-        Pane pane = createDemoPane();
+        Pane pane = createDemoPane(110, 110);
         root.getChildren().add(pane);
 
         // 使 pane 可改变大小

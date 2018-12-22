@@ -86,26 +86,22 @@ public class AutoScrollable extends ScrollPaneDraggingAttachable {
         double viewPortWidth = scrollPane.getViewportBounds().getWidth();
         double contentWidth = scrollPane.getContent().getLayoutBounds().getWidth();
 
-        double step;
-        if (viewPortWidth >= contentWidth) {
-            step = 0;
-        } else {
-            step = scrollStep / (contentWidth - viewPortWidth);
-        }
-        return step;
+        return getScrollStep0(viewPortWidth, contentWidth);
     }
 
     private double getScrollStepV(ScrollPane scrollPane) {
         double viewPortHeight = scrollPane.getViewportBounds().getHeight();
         double contentHeight = scrollPane.getContent().getLayoutBounds().getHeight();
 
-        double step;
-        if (viewPortHeight >= contentHeight) {
-            step = 0;
+        return getScrollStep0(viewPortHeight, contentHeight);
+    }
+
+    private double getScrollStep0(double viewPortLength, double contentLength) {
+        if (contentLength <= viewPortLength) {
+            return  0;
         } else {
-            step = scrollStep / (contentHeight - viewPortHeight);
+            return scrollStep / (contentLength - viewPortLength);
         }
-        return step;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class ListCellFactoryBuilder<T> {
         return this;
     }
 
-    public void setTo(ListView<T> listView) {
+    public void applyTo(ListView<T> listView) {
         listView.setCellFactory(lv -> {
 
             ListCell<T> listCell = new ListCell<T>() {

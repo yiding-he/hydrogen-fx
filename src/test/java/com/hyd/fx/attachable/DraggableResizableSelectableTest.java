@@ -17,7 +17,7 @@ public class DraggableResizableSelectableTest extends AttachableTestBase {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Pane root = new Pane();
-        Pane pane = createDemoPane();
+        Pane pane = createDemoPane(110, 110);
         pane.setPrefWidth(200);
         pane.setBackground(FxStyle.background("#FFFFFF"));
         root.getChildren().add(pane);
