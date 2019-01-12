@@ -28,10 +28,11 @@ public class TableViewHelper {
         return tableColumn;
     }
 
-    public static <T> TableColumn<T, String> createStrPropColumn(String text, ObservableValue<String> ob) {
+    public static <T> TableColumn<T, String> createStrPropColumn(
+            String text, Function<T, ObservableValue<String>> toStringProperty) {
 
         TableColumn<T, String> tableColumn = new TableColumn<>(text);
-        tableColumn.setCellValueFactory(f -> ob);
+        tableColumn.setCellValueFactory(param -> toStringProperty.apply(param.getValue()));
         return tableColumn;
     }
 
@@ -41,17 +42,19 @@ public class TableViewHelper {
         return tableColumn;
     }
 
-    public static <T> TableColumn<T, Integer> createIntPropColumn(String text, ObservableValue<Integer> ob) {
+    public static <T> TableColumn<T, Integer> createIntPropColumn(
+            String text, Function<T, ObservableValue<Integer>> toIntProperty) {
+
         TableColumn<T, Integer> tableColumn = new TableColumn<>(text);
-        tableColumn.setCellValueFactory(cell -> ob);
+        tableColumn.setCellValueFactory(cell -> toIntProperty.apply(cell.getValue()));
         return tableColumn;
     }
 
     public static <T, R> TableColumn<T, R> createPropColumn(
-            String text, ObservableValue<R> ob) {
+            String text, Function<T, ObservableValue<R>> toValueProperty) {
 
         TableColumn<T, R> tableColumn = new TableColumn<>(text);
-        tableColumn.setCellValueFactory(cell -> ob);
+        tableColumn.setCellValueFactory(cell -> toValueProperty.apply(cell.getValue()));
         return tableColumn;
     }
 
