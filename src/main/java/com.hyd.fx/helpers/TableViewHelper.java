@@ -48,10 +48,10 @@ public class TableViewHelper {
     }
 
     public static <T, R> TableColumn<T, R> createPropColumn(
-            String text, Function<T, ObservableValue<R>> toValueProperty) {
+            String text, ObservableValue<R> ob) {
 
         TableColumn<T, R> tableColumn = new TableColumn<>(text);
-        tableColumn.setCellValueFactory(cell -> toValueProperty.apply(cell.getValue()));
+        tableColumn.setCellValueFactory(cell -> ob);
         return tableColumn;
     }
 
