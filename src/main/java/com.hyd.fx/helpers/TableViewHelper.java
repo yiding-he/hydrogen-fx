@@ -28,11 +28,10 @@ public class TableViewHelper {
         return tableColumn;
     }
 
-    public static <T> TableColumn<T, String> createStrPropColumn(
-            String text, Function<T, ObservableValue<String>> toStringProperty) {
+    public static <T> TableColumn<T, String> createStrPropColumn(String text, ObservableValue<String> ob) {
 
         TableColumn<T, String> tableColumn = new TableColumn<>(text);
-        tableColumn.setCellValueFactory(param -> toStringProperty.apply(param.getValue()));
+        tableColumn.setCellValueFactory(f -> ob);
         return tableColumn;
     }
 
@@ -42,11 +41,9 @@ public class TableViewHelper {
         return tableColumn;
     }
 
-    public static <T> TableColumn<T, Integer> createIntPropColumn(
-            String text, Function<T, ObservableValue<Integer>> toIntProperty) {
-
+    public static <T> TableColumn<T, Integer> createIntPropColumn(String text, ObservableValue<Integer> ob) {
         TableColumn<T, Integer> tableColumn = new TableColumn<>(text);
-        tableColumn.setCellValueFactory(cell -> toIntProperty.apply(cell.getValue()));
+        tableColumn.setCellValueFactory(cell -> ob);
         return tableColumn;
     }
 
