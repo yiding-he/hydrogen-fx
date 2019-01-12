@@ -35,6 +35,11 @@ public class TableViewBuilder<T> {
         return this;
     }
 
+    public TableViewBuilder<T> addStrPropertyColumn(String text, Function<T, ObservableValue<String>> ob) {
+        this.tableView.getColumns().add(TableViewHelper.createStrPropColumn(text, ob));
+        return this;
+    }
+
     public TableViewBuilder<T> addNodeColumn(String text, Function<T, Node> toNode) {
         TableColumn<T, T> column = new TableColumn<>(text);
         column.setCellFactory(col -> new TableCell<T, T>() {
@@ -54,6 +59,11 @@ public class TableViewBuilder<T> {
 
     public TableViewBuilder<T> addIntColumn(String text, Function<T, Integer> toInt) {
         this.tableView.getColumns().add(TableViewHelper.createIntColumn(text, toInt));
+        return this;
+    }
+
+    public TableViewBuilder<T> addIntPropertyColumn(String text, Function<T, ObservableValue<Integer>> ob) {
+        this.tableView.getColumns().add(TableViewHelper.createIntPropColumn(text, ob));
         return this;
     }
 

@@ -1,8 +1,6 @@
 package com.hyd.fx;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 
 import java.io.IOException;
 
@@ -18,7 +16,7 @@ public class Fxml {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Fxml.class.getResource(fxml));
-            loader.setController(controller);
+            loader.setControllerFactory(type -> controller);
             loader.load();
             return loader;
         } catch (IOException e) {
