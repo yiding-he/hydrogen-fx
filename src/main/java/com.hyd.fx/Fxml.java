@@ -16,7 +16,9 @@ public class Fxml {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Fxml.class.getResource(fxml));
-            loader.setControllerFactory(type -> controller);
+            if (controller != null) {
+                loader.setControllerFactory(type -> controller);
+            }
             loader.load();
             return loader;
         } catch (IOException e) {
