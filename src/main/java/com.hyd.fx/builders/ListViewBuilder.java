@@ -1,0 +1,75 @@
+package com.hyd.fx.builders;
+
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+public class ListViewBuilder<T> {
+
+    public static <T> ListViewBuilder<T> of(ListView<T> listView) {
+        return new ListViewBuilder<>(listView);
+    }
+
+    private ListView<T> listView;
+
+    public ListViewBuilder(ListView<T> listView) {
+        this.listView = listView;
+    }
+
+    public ListViewBuilder<T> setStringFunction(Function<T, String> strFunction) {
+        this.listView.setCellFactory(lv -> new ListCell<T>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(strFunction.apply(item));
+                }
+            }
+        });
+        return this;
+    }
+
+    public ListViewBuilder<T> setStringProperty(Function<T, ObservableValue<String>> strPropFactory) {
+        this.listView.setCellFactory(lv -> new ListCell<T>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    textProperty().unbind();
+                } else {
+                    textProperty().bind(strPropFactory.apply(item));
+                }
+            }
+        });
+        return this;
+    }
+
+    public ListViewBuilder<T> setOnItemDoubleClick(Consumer<T> itemDoubleClicked) {
+        if (itemDoubleClicked == null) {
+            return this;
+        }
+
+        this.listView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            T selectedItem = listView.getSelectionModel().getSelectedItem();
+
+            if (selectedItem == null) {
+                return;
+            }
+
+            if (event.getClickCount() == 2 && event.getButton() == MouseButton.PRIMARY) {
+                itemDoubleClicked.accept(selectedItem);
+            }
+        });
+
+        return this;
+    }
+}
