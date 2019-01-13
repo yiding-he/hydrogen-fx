@@ -1,7 +1,7 @@
 package com.hyd.fx.builders;
 
+import com.hyd.fx.cells.ListCellFactory;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -22,34 +22,12 @@ public class ListViewBuilder<T> {
     }
 
     public ListViewBuilder<T> setStringFunction(Function<T, String> strFunction) {
-        this.listView.setCellFactory(lv -> new ListCell<T>() {
-            @Override
-            protected void updateItem(T item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty) {
-                    setText(null);
-                } else {
-                    setText(strFunction.apply(item));
-                }
-            }
-        });
+        this.listView.setCellFactory(lv -> ListCellFactory.createCell(strFunction));
         return this;
     }
 
     public ListViewBuilder<T> setStringProperty(Function<T, ObservableValue<String>> strPropFactory) {
-        this.listView.setCellFactory(lv -> new ListCell<T>() {
-            @Override
-            protected void updateItem(T item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty) {
-                    textProperty().unbind();
-                } else {
-                    textProperty().bind(strPropFactory.apply(item));
-                }
-            }
-        });
+        this.listView.setCellFactory(lv -> ListCellFactory.createCellWithProp(strPropFactory));
         return this;
     }
 
