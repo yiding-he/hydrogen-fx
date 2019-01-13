@@ -1,7 +1,7 @@
 package com.hyd.fx.attachable;
 
-import com.hyd.fx.Position;
 import com.hyd.fx.NodeUtils;
+import com.hyd.fx.Position;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
