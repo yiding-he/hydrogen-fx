@@ -50,4 +50,15 @@ public class ListViewBuilder<T> {
 
         return this;
     }
+
+    public ListViewBuilder<T> setOnItemSelected(Consumer<T> itemSelected) {
+        if (itemSelected == null) {
+            return this;
+        }
+
+        this.listView.getSelectionModel().selectedItemProperty()
+                .addListener((_ob, _old, _new) -> itemSelected.accept(_new));
+
+        return this;
+    }
 }
