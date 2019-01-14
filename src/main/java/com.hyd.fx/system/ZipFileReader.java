@@ -110,38 +110,6 @@ public class ZipFileReader implements Closeable {
     }
 
     /**
-     * 读取输入流的内容
-     *
-     * @param inputStream 输入流
-     *
-     * @return 输入流的内容
-     *
-     * @throws IOException 如果读取失败
-     */
-    public static byte[] toBytes(InputStream inputStream) throws IOException {
-        try {
-            byte[] content = new byte[0];
-            int len;
-            byte[] buffer = new byte[40960];
-            while ((len = inputStream.read(buffer)) != -1) {
-                content = concat(content, buffer, len);
-            }
-
-            return content;
-        } finally {
-            inputStream.close();
-        }
-    }
-
-    // 合并字节数组
-    private static byte[] concat(byte[] content, byte[] buffer, int len) {
-        byte[] result = new byte[content.length + len];
-        System.arraycopy(content, 0, result, 0, content.length);
-        System.arraycopy(buffer, 0, result, content.length, len);
-        return result;
-    }
-
-    /**
      * 从文本输入流中读取每一行并进行处理
      *
      * @param stream       输入流
@@ -215,7 +183,7 @@ public class ZipFileReader implements Closeable {
         if (zipEntry == null || zipEntry.isDirectory()) {
             return null;
         } else {
-            return toBytes(zipFile.getInputStream(zipEntry));
+            return ResourceHelper.readAsBytes(zipFile.getInputStream(zipEntry));
         }
     }
 
