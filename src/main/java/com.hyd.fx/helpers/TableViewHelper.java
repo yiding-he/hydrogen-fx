@@ -1,5 +1,6 @@
 package com.hyd.fx.helpers;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,6 +22,14 @@ import java.util.function.Function;
  * @author yidin
  */
 public class TableViewHelper {
+
+    public static <S, T> void setColumnValueFactory(
+            TableColumn<S, T> tableColumn,
+            Function<S, T> function
+    ) {
+        tableColumn.setCellValueFactory(
+                f -> new ReadOnlyObjectWrapper<>(function.apply(f.getValue())));
+    }
 
     public static <T> TableColumn<T, String> createStrColumn(String text, Function<T, String> toString) {
         TableColumn<T, String> tableColumn = new TableColumn<>(text);
