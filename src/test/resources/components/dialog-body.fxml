@@ -1,7 +1,12 @@
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="javafx" fx:controller="com.hyd.fx.dialog.DialogBuilderTest">
+<VBox xmlns:fx="javafx" spacing="10" fx:controller="com.hyd.fx.dialog.DialogBuilderTest">
     <Label fx:id="label1" text="1111"/>
     <Label fx:id="label2" text="2222"/>
     <Label fx:id="label3" text="3333"/>
+    <HBox alignment="BASELINE_LEFT" spacing="10">
+        <Label text="用户名："/>
+        <TextField fx:id="txtUsername"/>
+    </HBox>
 </VBox>

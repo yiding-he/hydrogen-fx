@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -22,6 +23,8 @@ public class DialogBuilderTest extends Application {
     public Label label2;
 
     public Label label3;
+
+    public TextField txtUsername;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -43,6 +46,7 @@ public class DialogBuilderTest extends Application {
                 .resizable(true)
                 .buttons(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL)
                 .onNoButtonClicked(Event::consume)
+                .onStageShown(event -> txtUsername.requestFocus())
                 .showAndWait()
                 .orElse(ButtonType.CANCEL);
 
