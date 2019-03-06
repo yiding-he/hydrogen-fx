@@ -13,17 +13,10 @@ public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
 
   private Function<T, ObservableValue<String>> toStringProperty;
 
-  private Consumer<ListCell<T>> onMouseEntered;
+  private Consumer<ListCell<T>> cellInitializer;
 
-  private Consumer<ListCell<T>> onMouseExited;
-
-  public ListCellFactory<T> setOnMouseEntered(Consumer<ListCell<T>> onMouseEntered) {
-    this.onMouseEntered = onMouseEntered;
-    return this;
-  }
-
-  public ListCellFactory<T> setOnMouseExited(Consumer<ListCell<T>> onMouseExited) {
-    this.onMouseExited = onMouseExited;
+  public ListCellFactory<T> setCellInitializer(Consumer<ListCell<T>> cellInitializer) {
+    this.cellInitializer = cellInitializer;
     return this;
   }
 
@@ -46,7 +39,8 @@ public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
 
   @Override
   public ListCell<T> call(ListView<T> param) {
-    return new ListCell<T>() {
+
+    ListCell<T> listCell = new ListCell<T>() {
       @Override
       protected void updateItem(T item, boolean empty) {
         super.updateItem(item, empty);
@@ -56,31 +50,27 @@ public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
           return;
         }
 
-        setCellText(item);
-        setCellMouseEvents();
-      }
-
-      private void setCellMouseEvents() {
-        if (onMouseEntered != null) {
-          this.setOnMouseEntered(event -> onMouseEntered.accept(this));
-        }
-        if (onMouseExited != null) {
-          this.setOnMouseExited(event -> onMouseExited.accept(this));
-        }
-      }
-
-      private void setCellText(T item) {
-        if (toStringFunction != null) {
-          setText(toStringFunction.apply(item));
-        }
-        if (toStringProperty != null) {
-          textProperty().unbind();
-          textProperty().bind(toStringProperty.apply(item));
-        }
-        if (toStringFunction == null && toStringProperty == null) {
-          setText(String.valueOf(item));
-        }
+        setCellText(this, item);
       }
     };
+
+    if (cellInitializer != null) {
+      cellInitializer.accept(listCell);
+    }
+
+    return listCell;
+  }
+
+  private void setCellText(ListCell<T> cell, T item) {
+    if (toStringFunction != null) {
+      cell.setText(toStringFunction.apply(item));
+    }
+    if (toStringProperty != null) {
+      cell.textProperty().unbind();
+      cell.textProperty().bind(toStringProperty.apply(item));
+    }
+    if (toStringFunction == null && toStringProperty == null) {
+      cell.setText(String.valueOf(item));
+    }
   }
 }
