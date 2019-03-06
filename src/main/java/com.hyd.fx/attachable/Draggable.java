@@ -1,17 +1,23 @@
 package com.hyd.fx.attachable;
 
+import static com.hyd.fx.NodeUtils.getMousePositionInParent;
+import static com.hyd.fx.NodeUtils.getNodePosition;
+import static com.hyd.fx.NodeUtils.getSurroundBounds;
+
 import com.hyd.fx.NodeUtils;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.WeakHashMap;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
-import static com.hyd.fx.NodeUtils.*;
 
 /**
  * 让一个（或一组）Node 可以被拖动位置
@@ -24,13 +30,13 @@ public class Draggable extends Attachable<Node> {
 
     private double[] startMousePosition;
 
-    private Map<Node, double[]> startNodePositions = new HashMap<>();
+    private Map<Node, double[]> startNodePositions = new WeakHashMap<>();
 
     private Bounds startSurroundBounds;         // 起始包围矩形框（包围所有 node 的矩形）
 
     private double[] draggingNodeInnerOffset;   // 被拖拽的 Node 在包围矩形框中的位置
 
-    private List<Node> nodes;
+    private Map<Node, Boolean> nodes = new WeakHashMap<>();
 
     private boolean outOfRangeEnabled = false;
 
@@ -76,7 +82,7 @@ public class Draggable extends Attachable<Node> {
     // 为一组 Node 创建一个统一的 Draggable 对象（亦可用于单个 Node）
     private Draggable(Collection<? extends Node> nodes) {
         super(nodes);
-        this.nodes = new ArrayList<>(nodes);
+        nodes.forEach(node -> this.nodes.put(node, Boolean.TRUE));
         init();
     }
 
@@ -111,7 +117,7 @@ public class Draggable extends Attachable<Node> {
     }
 
     private void init() {
-        this.nodes.forEach(node -> {
+        this.nodes.forEach((node, t) -> {
             node.addEventFilter(MouseEvent.MOUSE_PRESSED, onMousePressed);
             node.addEventFilter(MouseEvent.MOUSE_DRAGGED, onMouseDragged);
             node.addEventFilter(MouseEvent.MOUSE_RELEASED, onMouseReleased);
@@ -119,7 +125,7 @@ public class Draggable extends Attachable<Node> {
     }
 
     private void detach() {
-        this.nodes.forEach(node -> {
+        this.nodes.forEach((node, t) -> {
             node.removeEventFilter(MouseEvent.MOUSE_PRESSED, onMousePressed);
             node.removeEventFilter(MouseEvent.MOUSE_DRAGGED, onMouseDragged);
             node.removeEventFilter(MouseEvent.MOUSE_RELEASED, onMouseReleased);
@@ -138,11 +144,11 @@ public class Draggable extends Attachable<Node> {
     }
 
     private void forOtherNodes(Node eventNode, Consumer<Node> action) {
-        for (Node node : nodes) {
+        this.nodes.forEach((node, t) -> {
             if (node != eventNode && !node.isDisabled() && draggable(node)) {
                 action.accept(node);
             }
-        }
+        });
     }
 
     //////////////////////////////////////////////////////////////
@@ -159,6 +165,11 @@ public class Draggable extends Attachable<Node> {
 
         double[] nodePosition = getNodePosition(node);
         this.startNodePositions.put(node, nodePosition);
+
+        Collection<Node> nodes = this.nodes.keySet()
+            .stream()
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
 
         this.startSurroundBounds = getSurroundBounds(nodes);
         this.draggingNodeInnerOffset = new double[] {

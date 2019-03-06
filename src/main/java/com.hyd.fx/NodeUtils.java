@@ -1,5 +1,6 @@
 package com.hyd.fx;
 
+import java.util.Collection;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -76,7 +77,7 @@ public class NodeUtils {
     }
 
     // 根据一组 node 计算其外围框
-    public static Bounds getSurroundBounds(List<Node> nodeList) {
+    public static Bounds getSurroundBounds(Collection<Node> nodeList) {
 
         if (nodeList == null || nodeList.isEmpty()) {
             return new BoundingBox(0, 0, 0, 0);
