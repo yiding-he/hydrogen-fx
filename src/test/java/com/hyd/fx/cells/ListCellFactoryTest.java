@@ -1,13 +1,15 @@
 package com.hyd.fx.cells;
 
-import static com.hyd.fx.cells.ListCellEnhancements.acceptDrag;
-import static com.hyd.fx.cells.ListCellEnhancements.addClassOnMouseHover;
-import static com.hyd.fx.cells.ListCellEnhancements.canDrag;
+import static com.hyd.fx.enhancements.ListCellEnhancements.acceptDrag;
+import static com.hyd.fx.enhancements.ListCellEnhancements.addAfterCell;
+import static com.hyd.fx.enhancements.ListCellEnhancements.addClassOnDragEnter;
+import static com.hyd.fx.enhancements.ListCellEnhancements.canDrag;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.scene.control.Cell;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
@@ -18,28 +20,17 @@ public class ListCellFactoryTest extends Application {
   public void start(Stage primaryStage) throws Exception {
 
     ListView<String> listView1 = new ListView<>(
-        FXCollections.observableArrayList("111", "222", "333", "444", "555", "666"));
+        FXCollections.observableArrayList("111", "111", "111", "222", "333", "444", "555", "666"));
 
     listView1.setCellFactory(new ListCellFactory<String>()
-        .setToStringFunction(s -> s + ":" + s.hashCode())
-        .setCellInitializer(listCell -> {
-          addClassOnMouseHover(listCell, "list-cell-hover");
-          canDrag(listCell, Cell::getItem, () -> {
-            String value = listCell.getItem();
-            listCell.getListView().getItems().remove(value);
-          });
-        })
+        .setCellInitializer(this::initializeCell)
     );
 
     ListView<String> listView2 = new ListView<>(
         FXCollections.observableArrayList("000"));
 
     listView2.setCellFactory(new ListCellFactory<String>()
-        .setCellInitializer(listCell -> {
-          acceptDrag(listCell, data -> {
-            listCell.getListView().getItems().add(data.toString());
-          });
-        })
+        .setCellInitializer(this::initializeCell)
     );
 
     Scene scene = new Scene(new SplitPane(
@@ -49,5 +40,11 @@ public class ListCellFactoryTest extends Application {
 
     primaryStage.setScene(scene);
     primaryStage.show();
+  }
+
+  private void initializeCell(ListCell<String> listCell) {
+    addClassOnDragEnter(listCell, "list-cell-drag-hover");
+    canDrag(listCell, Cell::getItem);
+    acceptDrag(listCell, data -> addAfterCell(listCell, data.toString()));
   }
 }
