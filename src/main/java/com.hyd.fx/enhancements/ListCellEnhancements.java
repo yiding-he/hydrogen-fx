@@ -10,10 +10,28 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 
 public interface ListCellEnhancements {
+
+  static <T> void setOnDoubleClicked(ListCell<T> cell, Consumer<T> consumer) {
+    cell.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+      if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+        consumer.accept(cell.getItem());
+        e.consume();
+      }
+    });
+  }
+
+  static <T> void setOnSelected(ListCell<T> cell, Consumer<T> consumer) {
+    cell.selectedProperty().addListener((_ob, _old, _new) -> {
+      if (_new) {
+        consumer.accept(cell.getItem());
+      }
+    });
+  }
 
   static void addClassOnMouseHover(ListCell cell, String styleClass) {
     cell.addEventFilter(MouseEvent.MOUSE_ENTERED, event -> {
