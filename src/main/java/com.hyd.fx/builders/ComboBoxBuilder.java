@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -26,21 +25,7 @@ public class ComboBoxBuilder<T> {
 
   public ComboBoxBuilder<T> setCellFactory(Callback<ListView<T>, ListCell<T>> cellFactory) {
     this.comboBox.setCellFactory(cellFactory);
-    return this;
-  }
-
-  public ComboBoxBuilder<T> setButtonCellToStringProperty(Function<T, ObservableValue<String>> toStringProperty) {
-    this.comboBox.setButtonCell(new ComboBoxListCell<>(new StringConverter<T>() {
-      @Override
-      public String toString(T object) {
-        return toStringProperty.apply(object).getValue();
-      }
-
-      @Override
-      public T fromString(String string) {
-        return null;
-      }
-    }));
+    this.comboBox.setButtonCell(cellFactory.call(null));
     return this;
   }
 

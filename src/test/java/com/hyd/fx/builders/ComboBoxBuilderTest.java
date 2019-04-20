@@ -2,9 +2,15 @@ package com.hyd.fx.builders;
 
 import com.hyd.fx.User;
 import com.hyd.fx.cells.ListCellFactory;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -32,10 +38,18 @@ public class ComboBoxBuilderTest extends Application {
             new User(6, "user6", "_user6")
         );
 
+        List<Supplier<ImageView>> icons = Arrays.asList(
+            () -> ImageBuilder.imageView("/folder.png", 20),
+            () -> ImageBuilder.imageView("/music.png", 20)
+        );
+
+        Function<User, Node> iconFunction = user -> icons.get(user.getId() % 2).get();
+
         ComboBoxBuilder.of(comboBox)
             .setCellFactory(new ListCellFactory<User>()
-                .setToStringProperty(User::firstNameProperty))
-            .setButtonCellToStringProperty(User::firstNameProperty);
+                .withTextProperty(User::firstNameProperty)
+                .withGraphicFunction(iconFunction)
+            );
 
         return comboBox;
     }

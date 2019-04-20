@@ -3,15 +3,20 @@ package com.hyd.fx.cells;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
 
 public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
 
-  private Function<T, String> toStringFunction;
+  private Function<T, String> textFunction;
 
-  private Function<T, ObservableValue<String>> toStringProperty;
+  private Function<T, ObservableValue<String>> textProperty;
+
+  private Function<T, Node> graphicFunction;
+
+  private Function<T, ObservableValue<Node>> graphicProperty;
 
   private Consumer<ListCell<T>> cellInitializer;
 
@@ -20,20 +25,35 @@ public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
     return this;
   }
 
-  public ListCellFactory<T> setToStringFunction(Function<T, String> toStringFunction) {
-    if (this.toStringProperty != null) {
-      throw new IllegalStateException("You have already assigned toStringProperty.");
+  public ListCellFactory<T> withTextFunction(Function<T, String> toStringFunction) {
+    if (this.textProperty != null) {
+      throw new IllegalStateException("You have already assigned textProperty.");
     }
-    this.toStringFunction = toStringFunction;
+    this.textFunction = toStringFunction;
     return this;
   }
 
-  public ListCellFactory<T> setToStringProperty(
-      Function<T, ObservableValue<String>> toStringProperty) {
-    if (this.toStringFunction != null) {
-      throw new IllegalStateException("You have already assigned toStringFunction.");
+  public ListCellFactory<T> withTextProperty(Function<T, ObservableValue<String>> toStringProperty) {
+    if (this.textFunction != null) {
+      throw new IllegalStateException("You have already assigned textFunction.");
     }
-    this.toStringProperty = toStringProperty;
+    this.textProperty = toStringProperty;
+    return this;
+  }
+
+  public ListCellFactory<T> withGraphicFunction(Function<T, Node> graphicFunction) {
+    if (this.graphicProperty != null) {
+      throw new IllegalStateException("You have already assigned graphicProperty.");
+    }
+    this.graphicFunction = graphicFunction;
+    return this;
+  }
+
+  public ListCellFactory<T> withGraphicPropertt(Function<T, ObservableValue<Node>> graphicProperty) {
+    if (this.graphicFunction != null) {
+      throw new IllegalStateException("You have already assigned graphicFunction.");
+    }
+    this.graphicProperty = graphicProperty;
     return this;
   }
 
@@ -46,15 +66,19 @@ public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
         super.updateItem(item, empty);
 
         if (textProperty().isBound()) {
-          return;
+          textProperty().unbind();
+        }
+        if (graphicProperty().isBound()) {
+          graphicProperty().unbind();
         }
 
         if (empty) {
           setText(null);
-          return;
+          setGraphic(null);
+        } else {
+          setCellText(this, item);
+          setCellGraphic(this, item);
         }
-
-        setCellText(this, item);
       }
     };
 
@@ -65,15 +89,25 @@ public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
     return listCell;
   }
 
+  private void setCellGraphic(ListCell<T> cell, T item) {
+    if (graphicFunction != null) {
+      cell.setGraphic(graphicFunction.apply(item));
+    }
+    if (graphicProperty != null) {
+      cell.graphicProperty().unbind();
+      cell.graphicProperty().bind(graphicProperty.apply(item));
+    }
+  }
+
   private void setCellText(ListCell<T> cell, T item) {
-    if (toStringFunction != null) {
-      cell.setText(toStringFunction.apply(item));
+    if (textFunction != null) {
+      cell.setText(textFunction.apply(item));
     }
-    if (toStringProperty != null) {
+    if (textProperty != null) {
       cell.textProperty().unbind();
-      cell.textProperty().bind(toStringProperty.apply(item));
+      cell.textProperty().bind(textProperty.apply(item));
     }
-    if (toStringFunction == null && toStringProperty == null) {
+    if (textFunction == null && textProperty == null) {
       cell.setText(String.valueOf(item));
     }
   }
