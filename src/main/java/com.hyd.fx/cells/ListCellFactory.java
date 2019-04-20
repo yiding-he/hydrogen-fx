@@ -45,6 +45,10 @@ public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
       protected void updateItem(T item, boolean empty) {
         super.updateItem(item, empty);
 
+        if (textProperty().isBound()) {
+          return;
+        }
+
         if (empty) {
           setText(null);
           return;
