@@ -1,9 +1,7 @@
 package com.hyd.fx.enhancements;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import javafx.application.Platform;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.input.ClipboardContent;
@@ -48,9 +46,7 @@ public interface ListCellEnhancements {
   }
 
   static <T> void canDrag(ListCell<T> cell, Function<ListCell<T>, Object> dragValueFunc) {
-    canDrag(cell, dragValueFunc, () -> {
-      cell.getListView().getItems().remove(cell.getIndex());
-    });
+    canDrag(cell, dragValueFunc, () -> cell.getListView().getItems().remove(cell.getItem()));
   }
 
   static <T> void canDrag(
@@ -101,20 +97,5 @@ public interface ListCellEnhancements {
         _cell.getStyleClass().remove(styleClass);
       }
     });
-  }
-
-  static <T> void addAfterCell(ListCell<T> cell, T data) {
-    List<T> items = cell.getListView().getItems();
-    int index = cell.getIndex();
-
-    if (cell.isEmpty()) {
-      index = items.isEmpty() ? -1 : items.size() - 1;
-    }
-
-    items.add(index + 1, data);
-
-    final int _index = index + 1;
-    Platform.runLater(() ->
-        cell.getListView().getSelectionModel().select(_index + 1));
   }
 }

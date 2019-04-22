@@ -1,7 +1,6 @@
 package com.hyd.fx.cells;
 
 import static com.hyd.fx.enhancements.ListCellEnhancements.acceptDrag;
-import static com.hyd.fx.enhancements.ListCellEnhancements.addAfterCell;
 import static com.hyd.fx.enhancements.ListCellEnhancements.addClassOnDragEnter;
 import static com.hyd.fx.enhancements.ListCellEnhancements.canDrag;
 
@@ -16,35 +15,36 @@ import javafx.stage.Stage;
 
 public class ListCellFactoryTest extends Application {
 
-  @Override
-  public void start(Stage primaryStage) throws Exception {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
 
-    ListView<String> listView1 = new ListView<>(
-        FXCollections.observableArrayList("111", "111", "111", "222", "333", "444", "555", "666"));
+        ListView<String> listView1 = new ListView<>(
+            FXCollections.observableArrayList("111", "111", "111", "222", "333", "444", "555", "666"));
 
-    listView1.setCellFactory(new ListCellFactory<String>()
-        .setCellInitializer(this::initializeCell)
-    );
+        listView1.setCellFactory(new ListCellFactory<String>()
+            .setCellInitializer(this::initializeCell)
+        );
 
-    ListView<String> listView2 = new ListView<>(
-        FXCollections.observableArrayList("000"));
+        ListView<String> listView2 = new ListView<>(
+            FXCollections.observableArrayList("000"));
 
-    listView2.setCellFactory(new ListCellFactory<String>()
-        .setCellInitializer(this::initializeCell)
-    );
+        listView2.setCellFactory(new ListCellFactory<String>()
+            .setCellInitializer(this::initializeCell)
+        );
 
-    Scene scene = new Scene(new SplitPane(
-        listView1, listView2
-    ), 400, 300);
-    scene.getStylesheets().add("test.css");
+        Scene scene = new Scene(new SplitPane(
+            listView1, listView2
+        ), 400, 300);
+        scene.getStylesheets().add("test.css");
 
-    primaryStage.setScene(scene);
-    primaryStage.show();
-  }
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
-  private void initializeCell(ListCell<String> listCell) {
-    addClassOnDragEnter(listCell, "list-cell-drag-hover");
-    canDrag(listCell, Cell::getItem);
-    acceptDrag(listCell, data -> addAfterCell(listCell, data.toString()));
-  }
+    private void initializeCell(ListCell<String> listCell) {
+        addClassOnDragEnter(listCell, "list-cell-drag-hover");
+        canDrag(listCell, Cell::getItem);
+        acceptDrag(listCell, data -> {
+        });
+    }
 }
