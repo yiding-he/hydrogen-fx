@@ -59,6 +59,10 @@ public class LazyLoadingTreeItem<T> extends TreeItem<T> {
         });
     }
 
+    public void addChild(T t) {
+        getChildren().add(new LazyLoadingTreeItem<>(t, childrenSupplier, this.loadingText, false));
+    }
+
     private void loadChildren() {
         ForkJoinPool.commonPool().execute(this::loadChildrenAsync);
     }

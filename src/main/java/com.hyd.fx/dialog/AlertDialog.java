@@ -2,18 +2,22 @@ package com.hyd.fx.dialog;
 
 import com.hyd.fx.app.AppLogo;
 import com.hyd.fx.app.AppThread;
+import java.util.Optional;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
 
 /**
  * 提示/警告/错误对话框
@@ -126,4 +130,34 @@ public class AlertDialog {
         }
     }
 
+    //////////////////////////////////////////////////////////////
+
+    public static String input(String title, String message, boolean multiLine) {
+        VBox vBox = new VBox(5);
+        if (message != null) {
+            vBox.getChildren().add(new Label(message));
+        }
+
+        TextInputControl control = multiLine ? new TextArea() : new TextField();
+        control.setPrefWidth(300);
+        vBox.getChildren().add(control);
+
+        if (multiLine) {
+            VBox.setVgrow(control, Priority.ALWAYS);
+        }
+
+        Alert alert = new Alert(AlertType.INFORMATION, null, ButtonType.OK, ButtonType.CANCEL);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(null);
+        alert.getDialogPane().setContent(vBox);
+        alert.setResizable(true);
+
+        ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+        if (result == ButtonType.OK) {
+            return control.getText();
+        } else {
+            return null;
+        }
+    }
 }
