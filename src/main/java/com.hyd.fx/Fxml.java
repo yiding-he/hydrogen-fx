@@ -1,5 +1,6 @@
 package com.hyd.fx;
 
+import com.hyd.fx.springboot.SpringBootFXMLLoader;
 import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
@@ -11,6 +12,12 @@ import java.io.IOException;
  * @author yidin
  */
 public class Fxml {
+
+    private static boolean usingSpringBoot;
+
+    public static void setUsingSpringBoot(boolean usingSpringBoot) {
+        Fxml.usingSpringBoot = usingSpringBoot;
+    }
 
     /**
      * 使用指定的 Controller 对象来加载 FXML。注意如果 controller
@@ -25,7 +32,7 @@ public class Fxml {
      */
     public static FXMLLoader load(String fxml, Object controller) throws FxException {
         try {
-            FXMLLoader loader = new FXMLLoader();
+            FXMLLoader loader = createFXMLLoader();
             loader.setLocation(Fxml.class.getResource(fxml));
             if (controller != null) {
                 // 如果 FXML 指定了 fx:controller，就不允许使用 setController
@@ -37,6 +44,10 @@ public class Fxml {
         } catch (IOException e) {
             throw new FxException(e);
         }
+    }
+
+    private static FXMLLoader createFXMLLoader() {
+        return usingSpringBoot ? new SpringBootFXMLLoader() : new FXMLLoader();
     }
 
     public static FXMLLoader load(String fxml) throws FxException {

@@ -1,0 +1,13 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="javafx" spacing="10" fx:controller="com.hyd.fx.springboot.MainController">
+    <Label fx:id="label1" text="1111"/>
+    <Label fx:id="label2" text="2222"/>
+    <Label fx:id="label3" text="3333"/>
+    <HBox alignment="BASELINE_LEFT" spacing="10">
+        <Label text="用户名："/>
+        <TextField fx:id="txtUsername" prefWidth="300"/>
+    </HBox>
+    <fx:include source="form.fxml"/>
+</VBox>

@@ -1,0 +1,9 @@
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<GridPane xmlns:fx="javafx" hgap="10" vgap="10" fx:controller="com.hyd.fx.springboot.FormController">
+    <Label text="考号" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <Label text="考生姓名" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="txtExamNo" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+    <TextField fx:id="txtStudentName" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+</GridPane>

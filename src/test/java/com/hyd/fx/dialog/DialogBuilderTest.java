@@ -18,6 +18,8 @@ import javafx.stage.Stage;
  */
 public class DialogBuilderTest extends Application {
 
+    public String label1DefaultValue = "Hello!";
+
     public Label label1;
 
     public Label label2;
@@ -25,6 +27,12 @@ public class DialogBuilderTest extends Application {
     public Label label3;
 
     public TextField txtUsername;
+
+    public void initialize() {
+        this.label1.setText(label1DefaultValue);
+    }
+
+    ////////////////////////////////////////////////////////////
 
     @Override
     public void start(Stage primaryStage) throws Exception {

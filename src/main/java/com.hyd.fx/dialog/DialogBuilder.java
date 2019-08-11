@@ -1,6 +1,7 @@
 package com.hyd.fx.dialog;
 
 import com.hyd.fx.Fxml;
+import com.hyd.fx.app.AppLogo;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -183,6 +184,8 @@ public class DialogBuilder {
         Window window = dialog.getDialogPane().getScene().getWindow();
         if (window instanceof Stage && logo != null) {
             ((Stage) window).getIcons().add(logo);
+        } else {
+            AppLogo.setStageLogo(window);
         }
 
         dialog.setOnButtonClicked(this.buttonHandlerMap);
