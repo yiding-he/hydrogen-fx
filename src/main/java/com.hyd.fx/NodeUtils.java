@@ -1,6 +1,5 @@
 package com.hyd.fx;
 
-import java.util.Collection;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -8,8 +7,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Shape;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -140,6 +139,18 @@ public class NodeUtils {
             map.put(key, value);
         } else {
             map.remove(key);
+        }
+    }
+
+    public static void setManaged(Node... nodes) {
+        for (Node node : nodes) {
+            node.managedProperty().bind(node.visibleProperty());
+        }
+    }
+
+    public static void setDisable(boolean disable, Node... nodes) {
+        for (Node node : nodes) {
+            node.setDisable(disable);
         }
     }
 }

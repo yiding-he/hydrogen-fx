@@ -18,6 +18,7 @@ public class CheckBoxTreeTest extends Application {
         primaryStage.show();
     }
 
+    @SuppressWarnings("unchecked")
     private TreeView<String> tree() {
         TreeView<String> treeView = new TreeView<>();
         // create the tree model

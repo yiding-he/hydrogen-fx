@@ -1,15 +1,16 @@
 package com.hyd.fx.builders;
 
-import java.util.Collection;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+
+import java.util.Collection;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class ComboBoxBuilder<T> {
 
@@ -49,7 +50,8 @@ public class ComboBoxBuilder<T> {
     return this;
   }
 
-  public ComboBoxBuilder<T> setItems(T... tCollection) {
+  @SafeVarargs
+  public final ComboBoxBuilder<T> setItems(T... tCollection) {
     this.comboBox.getItems().setAll(tCollection);
     return this;
   }

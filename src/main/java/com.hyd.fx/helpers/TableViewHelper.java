@@ -107,6 +107,7 @@ public class TableViewHelper {
         return tableColumn;
     }
 
+    @SafeVarargs
     public static <T> void setColumns(TableView<T> tableView, TableColumn<T, ?>... columns) {
         tableView.getColumns().addAll(columns);
     }

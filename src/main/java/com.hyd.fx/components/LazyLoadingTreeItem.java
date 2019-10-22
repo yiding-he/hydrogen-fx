@@ -1,15 +1,17 @@
 package com.hyd.fx.components;
 
 import com.hyd.fx.utils.Collects;
+import javafx.application.Platform;
+import javafx.scene.control.TreeItem;
+
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javafx.application.Platform;
-import javafx.scene.control.TreeItem;
 
 public class LazyLoadingTreeItem<T> extends TreeItem<T> {
 
+    @SuppressWarnings("unchecked")
     private static class LoadingTreeItem extends TreeItem {
 
         public LoadingTreeItem(Object value) {
@@ -35,6 +37,7 @@ public class LazyLoadingTreeItem<T> extends TreeItem<T> {
         this(value, childrenSupplier, loadingText, false);
     }
 
+    @SuppressWarnings("unchecked")
     private LazyLoadingTreeItem(
         T value, Function<TreeItem<T>, List<T>> childrenSupplier, String loadingText, boolean loadChildrenNow
     ) {
