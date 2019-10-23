@@ -2,20 +2,12 @@ package com.hyd.fx.dialog;
 
 import com.hyd.fx.app.AppLogo;
 import com.hyd.fx.app.AppThread;
+import com.hyd.fx.utils.Str;
 import java.util.Optional;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,9 +29,9 @@ public class AlertDialog {
     }
 
     public static void error(String title, Throwable throwable) {
-        boolean noMessage = StringUtils.isBlank(throwable.getMessage());
+        boolean noMessage = Str.isBlank(throwable.getMessage());
         String message = noMessage ? throwable.toString() : throwable.getMessage();
-        error(title, message, ExceptionUtils.getStackTrace(throwable));
+        error(title, message, Str.getStackTrace(throwable));
     }
 
     public static void info(String title, String message) {

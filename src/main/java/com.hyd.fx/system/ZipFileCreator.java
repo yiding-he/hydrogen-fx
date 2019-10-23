@@ -1,12 +1,9 @@
 package com.hyd.fx.system;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.hyd.fx.utils.Str;
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.function.Supplier;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -159,7 +156,7 @@ public class ZipFileCreator implements Closeable {
         String line;
         while ((line = lineSuppiler.get()) != null) {
 
-            if (StringUtils.isBlank(line) && ignoreBlankLine) {
+            if (Str.isBlank(line) && ignoreBlankLine) {
                 continue;
             }
 

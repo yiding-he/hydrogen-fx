@@ -1,12 +1,10 @@
 package com.hyd.fx.builders;
 
-import com.hyd.fx.app.AppLogo;
 import com.hyd.fx.utils.Nullable;
+import com.hyd.fx.utils.Str;
+import java.io.InputStream;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.InputStream;
 
 /**
  * @author SYSTEM
@@ -15,7 +13,7 @@ public class ImageBuilder {
 
     @Nullable
     public static Image image(String resourcePath) {
-        if (StringUtils.isBlank(resourcePath)) {
+        if (Str.isBlank(resourcePath)) {
             return null;
         }
 

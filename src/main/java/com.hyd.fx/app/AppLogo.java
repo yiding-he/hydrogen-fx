@@ -1,12 +1,10 @@
 package com.hyd.fx.app;
 
 import com.hyd.fx.builders.ImageBuilder;
-import com.hyd.fx.utils.NotNull;
-import com.hyd.fx.utils.Nullable;
+import com.hyd.fx.utils.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * 设置全局的窗体图标，调用 setStageLogo() 方法将图标应用到窗体上。
@@ -34,7 +32,7 @@ public class AppLogo {
     }
 
     public static void setStageLogo(@NotNull Stage stage) {
-        if (StringUtils.isBlank(path)) {
+        if (Str.isBlank(path)) {
             return;
         }
 
