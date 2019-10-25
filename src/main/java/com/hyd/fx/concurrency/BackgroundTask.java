@@ -1,11 +1,12 @@
 package com.hyd.fx.concurrency;
 
-import static com.hyd.fx.app.AppThread.runUIThread;
-
 import com.hyd.fx.dialog.AlertDialog;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
+
+import static com.hyd.fx.app.AppThread.runUIThread;
 
 /**
  * 后台任务，与 Service 不同的是：
