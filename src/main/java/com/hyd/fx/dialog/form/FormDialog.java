@@ -29,9 +29,9 @@ import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
  */
 public abstract class FormDialog extends Stage {
 
-    private final Button cancelButton = new Button("确定(_O)");
+    private final Button okButton = new Button("确定(_O)");
 
-    private final Button okButton = new Button("取消(_C)");
+    private final Button cancelButton = new Button("取消(_C)");
 
     private final GridPane contentPane = new GridPane();
 
@@ -45,7 +45,6 @@ public abstract class FormDialog extends Stage {
                 new Separator(Orientation.HORIZONTAL),
                 getButtonsPane()
         );
-        root.getStylesheets().add("css/style.css");
         root.setMinWidth(200);
         root.setMinHeight(100);
         setScene(new Scene(root));

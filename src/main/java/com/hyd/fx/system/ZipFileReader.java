@@ -1,9 +1,5 @@
 package com.hyd.fx.system;
 
-import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Enumeration;
@@ -11,6 +7,9 @@ import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 遍历和读取 zip 文件的帮助类
