@@ -1,8 +1,7 @@
 package com.hyd.fx.builders;
 
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
@@ -42,24 +41,24 @@ public class MenuBuilder {
         return menuItem(name, null, accelerator, action, false);
     }
 
-    public static MenuItem menuItem(String name, Image icon, Runnable action) {
+    public static MenuItem menuItem(String name, Node icon, Runnable action) {
         return menuItem(name, icon, null, action, false);
     }
 
-    public static MenuItem menuItem(String name, Image icon, Runnable action, boolean disabled) {
+    public static MenuItem menuItem(String name, Node icon, Runnable action, boolean disabled) {
         return menuItem(name, icon, null, action, disabled);
     }
 
-    public static MenuItem menuItem(String name, Image icon, String accelerator, Runnable action) {
+    public static MenuItem menuItem(String name, Node icon, String accelerator, Runnable action) {
         return menuItem(name, icon, accelerator, action, false);
     }
 
-    public static MenuItem menuItem(String name, Image icon, String accelerator, Runnable action, boolean disabled) {
+    public static MenuItem menuItem(String name, Node icon, String accelerator, Runnable action, boolean disabled) {
         MenuItem menuItem = new MenuItem(name);
         menuItem.setOnAction(event -> action.run());
 
         if (icon != null) {
-            menuItem.setGraphic(ImageBuilder.imageView(icon, 16));
+            menuItem.setGraphic(icon);
         }
 
         if (accelerator != null) {

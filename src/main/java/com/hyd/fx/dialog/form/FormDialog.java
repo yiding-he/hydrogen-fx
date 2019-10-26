@@ -1,25 +1,19 @@
 package com.hyd.fx.dialog.form;
 
+import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
+
 import com.hyd.fx.app.AppLogo;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
+import javafx.geometry.*;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
+import javafx.stage.*;
 
 /**
  * (description)
@@ -87,8 +81,13 @@ public abstract class FormDialog extends Stage {
         contentPane.getChildren().addListener((ListChangeListener<Node>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
-                    c.getAddedSubList().forEach(node ->
-                            GridPane.setValignment(node, VPos.TOP));
+                    c.getAddedSubList().forEach(
+                        node -> {
+                            if (GridPane.getColumnIndex(node) == 0) {
+                                GridPane.setValignment(node, VPos.TOP);
+                            }
+                        }
+                    );
                 }
             }
         });
