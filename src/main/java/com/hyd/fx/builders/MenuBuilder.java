@@ -2,8 +2,6 @@ package com.hyd.fx.builders;
 
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
 
 /**
@@ -14,11 +12,8 @@ import javafx.scene.input.KeyCombination;
  */
 public class MenuBuilder {
 
-    public static Menu menu(String name, Image icon, MenuItem... menuItems) {
-        ImageView imageView = new ImageView(icon);
-        imageView.setFitWidth(16);
-        imageView.setFitHeight(16);
-        return new Menu(name, imageView, menuItems);
+    public static Menu menu(String name, Node icon, MenuItem... menuItems) {
+        return new Menu(name, icon, menuItems);
     }
 
     public static Menu menu(String name, MenuItem... menuItems) {
