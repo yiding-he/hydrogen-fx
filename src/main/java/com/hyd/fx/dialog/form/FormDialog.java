@@ -35,9 +35,9 @@ public abstract class FormDialog extends Stage {
         VBox root = new VBox(10);
         root.setPadding(new Insets(10));
         root.getChildren().addAll(
-                getContentPane(),
-                new Separator(Orientation.HORIZONTAL),
-                getButtonsPane()
+            getContentPane(),
+            new Separator(Orientation.HORIZONTAL),
+            getButtonsPane()
         );
         root.setMinWidth(200);
         root.setMinHeight(100);
@@ -52,6 +52,8 @@ public abstract class FormDialog extends Stage {
 
         okButton.setOnAction(this::okButtonClicked);
         cancelButton.setOnAction(this::cancelButtonClicked);
+
+        this.setOnShown(this::formShown);
         this.setOnCloseRequest(this::closeButtonClicked);
     }
 
@@ -69,6 +71,17 @@ public abstract class FormDialog extends Stage {
 
     protected void closeButtonClicked(WindowEvent event) {
         this.close();
+    }
+
+    private void formShown(WindowEvent event) {
+        Window owner = this.getOwner();
+
+        if (owner == null) {
+            return;
+        }
+
+        this.setX(owner.getX() + (owner.getWidth() - this.getWidth()) / 2);
+        this.setY(owner.getY() + (owner.getHeight() - this.getHeight()) / 2);
     }
 
     //////////////////////////////////////////////////////////////
