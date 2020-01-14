@@ -2,9 +2,7 @@ package com.hyd.fx.dialog.form;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 /**
  * (description)
@@ -40,6 +38,14 @@ public class TextAreaFormField extends FormField {
 
     public String getText() {
         return this.textArea.getText();
+    }
+
+    public void setText(String text) {
+        this.textArea.setText(text);
+    }
+
+    public TextArea getTextArea() {
+        return textArea;
     }
 
     public void setEditable(boolean editable) {
