@@ -3,6 +3,7 @@ package com.hyd.fx.components;
 import java.util.Arrays;
 import java.util.List;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -40,7 +41,7 @@ public class FilterableListViewTest extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FilterableListView<String> listView = new FilterableListView<>();
-        listView.setOriginalItems(STRINGS);
+        listView.setOriginalItems(FXCollections.observableArrayList(STRINGS));
 
         TextField textField = new TextField();
         textField.textProperty().addListener((_ob, _old, _new) -> {
