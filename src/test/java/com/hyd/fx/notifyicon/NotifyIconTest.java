@@ -1,21 +1,18 @@
 package com.hyd.fx.notifyicon;
 
-import static com.hyd.fx.builders.MenuBuilder.contextMenu;
-import static com.hyd.fx.builders.MenuBuilder.menu;
-
 import com.hyd.fx.dialog.AlertDialog;
+import java.awt.Font;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.UIManager;
 
 public class NotifyIconTest extends Application {
 
@@ -41,29 +38,21 @@ public class NotifyIconTest extends Application {
         }
 
         SystemTray tray = SystemTray.getSystemTray();
-        ContextMenu contextMenu = contextMenu(
-            menu("关于...")
-        );
 
         try {
             BufferedImage icon = ImageIO.read(NotifyIconTest.class.getResource("/favorite.png"));
             TrayIcon trayIcon = new TrayIcon(icon);
             tray.add(trayIcon);
 
-            trayIcon.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    System.out.println(e.getButton());
-                    if (e.getButton() == MouseEvent.BUTTON3) {
-                        final JPopupMenu pop = new JPopupMenu();
-                        pop.add(new JMenuItem("中文", new ImageIcon(icon)));
-                        pop.add(new JMenuItem("主题", new ImageIcon(icon)));
-                        pop.setLocation(e.getX(), e.getY());
-                        pop.setInvoker(pop);
-                        pop.setVisible(true);
-                    }
-                }
+            final PopupMenu pop = new PopupMenu();
+            MenuItem item1 = new MenuItem(new String("中文".getBytes("GBK")));
+            item1.setFont(Font.getFont("Microsoft Yahei"));
+            item1.addActionListener(e -> {
+                System.out.println(item1.getLabel());
             });
+            pop.add(item1);
+            pop.add(new MenuItem("主题"));
+            trayIcon.setPopupMenu(pop);
 
             primaryStage.setOnCloseRequest(event -> {
                 tray.remove(trayIcon);
