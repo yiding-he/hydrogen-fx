@@ -1,5 +1,6 @@
 package com.hyd.fx.dialog;
 
+import com.hyd.fx.app.AppPrimaryStage;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.scene.Scene;
@@ -40,8 +41,9 @@ public class DialogBuilderTest extends Application {
         button.setOnAction(actionEvent -> createDialog());
 
         BorderPane borderPane = new BorderPane(button);
-        borderPane.setStyle("-fx-padding: 10");
+        borderPane.setStyle("-fx-padding: 50");
 
+        AppPrimaryStage.setPrimaryStage(primaryStage);
         primaryStage.setScene(new Scene(borderPane));
         primaryStage.show();
     }
@@ -49,14 +51,15 @@ public class DialogBuilderTest extends Application {
     private void createDialog() {
 
         ButtonType buttonType = new DialogBuilder()
-                .title("Hello!")
-                .body("/components/dialog-body.fxml", this)
-                .resizable(true)
-                .buttons(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL)
-                .onNoButtonClicked(Event::consume)
-                .onStageShown(event -> txtUsername.requestFocus())
-                .showAndWait()
-                .orElse(ButtonType.CANCEL);
+            .owner(AppPrimaryStage.getPrimaryStage())
+            .title("Hello!")
+            .body("/components/dialog-body.fxml", this)
+            .resizable(true)
+            .buttons(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL)
+            .onNoButtonClicked(Event::consume)
+            .onStageShown(event -> txtUsername.requestFocus())
+            .showAndWait()
+            .orElse(ButtonType.CANCEL);
 
         System.out.println(buttonType);
         System.out.println(label1.getText());
