@@ -67,11 +67,4 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>local</id>
-            <url>file:///D:/Projects/OpenSource/mvn-repo</url>
-        </repository>
-    </distributionManagement>
-
 </project>
