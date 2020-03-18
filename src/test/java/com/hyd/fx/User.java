@@ -18,15 +18,6 @@ public class User {
 
     private ObjectProperty<UserType> userType = new SimpleObjectProperty<>();
 
-    public User() {
-    }
-
-    public User(int id, String firstName, String lastName) {
-        this.setId(id);
-        this.setFirstName(firstName);
-        this.setLastName(lastName);
-    }
-
     public User(int id, String firstName, String lastName, UserType userType) {
         this.setId(id);
         this.setFirstName(firstName);
