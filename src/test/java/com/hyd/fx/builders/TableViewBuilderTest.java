@@ -6,6 +6,7 @@ import static com.hyd.fx.builders.LayoutBuilder.vbox;
 
 import com.hyd.fx.User;
 import com.hyd.fx.UserType;
+import java.util.concurrent.atomic.AtomicInteger;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,7 +31,10 @@ public class TableViewBuilderTest extends Application {
             .addStrColumn("Type", user -> user.getUserType().name())
         ;
 
-        Runnable addUser = () -> tableView.getItems().add(new User(1, "aaa", "bbb", UserType.User));
+        AtomicInteger userIdCounter = new AtomicInteger();
+        Runnable addUser = () -> tableView.getItems().add(
+            new User(userIdCounter.incrementAndGet(), "aaa", "bbb", UserType.User)
+        );
 
         Parent root = vbox(10, 10,
             hbox(0, 10,

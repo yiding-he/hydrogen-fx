@@ -5,8 +5,12 @@ import static com.hyd.fx.builders.ImageBuilder.imageView;
 import com.hyd.fx.User;
 import com.hyd.fx.UserType;
 import com.hyd.fx.cells.ListCellFactory;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
@@ -38,15 +42,17 @@ public class ComboBoxBuilderTest extends Application {
             new User(6, "user6", "_user6", UserType.User)
         );
 
-        final Supplier<ImageView> adminIconSupplier = () -> imageView("/folder.png", 20);
-        final Supplier<ImageView> userIconSupplier = () -> imageView("/music.png", 20);
+        final Map<UserType, Supplier<ImageView>> userLogoMappings = new HashMap<>();
+        userLogoMappings.put(UserType.User, () -> imageView("/music.png", 20));
+        userLogoMappings.put(UserType.Admin, () -> imageView("/folder.png", 20));
+
+        final Function<User, Node> userLogoFactory =
+            user -> userLogoMappings.get(user.getUserType()).get();
 
         ComboBoxBuilder.of(comboBox)
             .setCellFactory(new ListCellFactory<User>()
                 .withTextProperty(User::firstNameProperty)
-                .withGraphicFunction(user ->
-                    user.getUserType() == UserType.Admin ? adminIconSupplier.get() : userIconSupplier.get()
-                )
+                .withGraphicFunction(userLogoFactory)
             );
 
         comboBox.getSelectionModel().select(0);
