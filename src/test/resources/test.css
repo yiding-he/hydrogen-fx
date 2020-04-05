@@ -3,6 +3,6 @@
 }
 
 .list-cell-drag-hover {
-  -fx-border-color: #8d9c00;
-  -fx-border-width: 0 0 1px 0;
+  -fx-border-color: #999999;
+  -fx-border-width: 0 0 5px 0;
 }

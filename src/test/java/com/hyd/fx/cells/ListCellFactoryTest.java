@@ -1,9 +1,5 @@
 package com.hyd.fx.cells;
 
-import static com.hyd.fx.enhancements.ListCellEnhancements.acceptDrag;
-import static com.hyd.fx.enhancements.ListCellEnhancements.addClassOnDragEnter;
-import static com.hyd.fx.enhancements.ListCellEnhancements.canDrag;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
@@ -12,6 +8,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
+
+import static com.hyd.fx.enhancements.ListCellEnhancements.*;
 
 public class ListCellFactoryTest extends Application {
 
@@ -45,6 +43,8 @@ public class ListCellFactoryTest extends Application {
         addClassOnDragEnter(listCell, "list-cell-drag-hover");
         canDrag(listCell, Cell::getItem);
         acceptDrag(listCell, data -> {
+            listCell.getListView().getItems().add(listCell.getIndex() + 1, String.valueOf(data));
+            listCell.getListView().getSelectionModel().select(listCell.getIndex() + 1);
         });
     }
 }
