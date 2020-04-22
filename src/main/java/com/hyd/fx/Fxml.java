@@ -1,8 +1,8 @@
 package com.hyd.fx;
 
-import javafx.fxml.FXMLLoader;
-
 import java.io.IOException;
+import java.util.ResourceBundle;
+import javafx.fxml.FXMLLoader;
 
 /**
  * (description)
@@ -23,15 +23,21 @@ public class Fxml {
      *
      * @throws FxException 如果加载失败
      */
-    public static FXMLLoader load(String fxml, Object controller) throws FxException {
+    public static FXMLLoader load(String fxml, ResourceBundle resourceBundle, Object controller) throws FxException {
         try {
             FXMLLoader loader = createFXMLLoader();
             loader.setLocation(Fxml.class.getResource(fxml));
+
+            if (resourceBundle != null) {
+                loader.setResources(resourceBundle);
+            }
+
             if (controller != null) {
                 // 如果 FXML 指定了 fx:controller，就不允许使用 setController
                 // 仅当 FXML 指定了 fx:controller 时才会调用 controllerFactory
                 loader.setController(controller);
             }
+
             loader.load();
             return loader;
         } catch (IOException e) {
@@ -44,6 +50,10 @@ public class Fxml {
     }
 
     public static FXMLLoader load(String fxml) throws FxException {
-        return load(fxml, null);
+        return load(fxml, null, null);
+    }
+
+    public static FXMLLoader load(String fxml, ResourceBundle resourceBundle) throws FxException {
+        return load(fxml, resourceBundle, null);
     }
 }
