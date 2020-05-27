@@ -4,6 +4,7 @@ import javafx.beans.NamedArg;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory;
+import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 
 /**
@@ -19,16 +20,20 @@ public class DoubleSpinner extends Spinner<Double> {
     ) {
         super(min, max, initialValue, amountToStepBy);
 
-        // 允许用户在输入的过程中即时改变控件的值，同时不允许用户输入非法字符或超出范围的值
-        getEditor().textProperty().addListener((_ob, _old, _new) -> {
-            SpinnerValueFactory<Double> valueFactory = getValueFactory();
-            StringConverter<Double> converter = valueFactory.getConverter();
-            try {
-                valueFactory.setValue(Math.min(getMax(), Math.max(getMin(), converter.fromString(_new))));
-            } catch (NumberFormatException e) {
-                // ignore this error
+        final TextField editor = getEditor();
+        editor.focusedProperty().addListener((_ob, _old, _new) -> {
+            if (_old && !_new) {
+                SpinnerValueFactory<Double> valueFactory = getValueFactory();
+                StringConverter<Double> converter = valueFactory.getConverter();
+                try {
+                    valueFactory.setValue(
+                        Math.min(getMax(), Math.max(getMin(), converter.fromString(editor.getText())))
+                    );
+                } catch (NumberFormatException e) {
+                    // ignore this error
+                }
+                editor.setText(converter.toString(valueFactory.getValue()));
             }
-            getEditor().setText(converter.toString(valueFactory.getValue()));
         });
     }
 

@@ -1,7 +1,6 @@
 package com.hyd.fx.dialog.form;
 
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import com.hyd.fx.components.IntegerSpinner;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -9,12 +8,12 @@ import javafx.scene.layout.GridPane;
  */
 public class IntegerSpinnerFormField extends FormField {
 
-    private Spinner<Integer> spinner = new Spinner<>();
+    private final IntegerSpinner spinner;
 
-    public IntegerSpinnerFormField(String labelName, int min, int max) {
+    public IntegerSpinnerFormField(String labelName, int min, int max, int init, boolean editable) {
         super(labelName);
-        ((SpinnerValueFactory.IntegerSpinnerValueFactory) spinner.getValueFactory()).setMin(min);
-        ((SpinnerValueFactory.IntegerSpinnerValueFactory) spinner.getValueFactory()).setMax(max);
+        this.spinner = new IntegerSpinner(min, max, init, 1);
+        this.spinner.setEditable(editable);
     }
 
     public void setEditable(boolean editable) {
