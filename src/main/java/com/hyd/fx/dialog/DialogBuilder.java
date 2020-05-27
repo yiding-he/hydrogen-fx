@@ -8,12 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogEvent;
@@ -44,7 +47,11 @@ public class DialogBuilder {
 
     private boolean resizable;
 
+    private boolean noDefaultButtons;
+
     private Object controller;
+
+    private ResourceBundle resources;
 
     private Map<ButtonType, Consumer<ActionEvent>> buttonHandlerMap = new HashMap<>();
 
@@ -65,8 +72,18 @@ public class DialogBuilder {
         return this;
     }
 
+    public DialogBuilder resources(ResourceBundle resources) {
+        this.resources = resources;
+        return this;
+    }
+
     public DialogBuilder resizable(boolean resizable) {
         this.resizable = resizable;
+        return this;
+    }
+
+    public DialogBuilder noDefaultButtons() {
+        this.noDefaultButtons = true;
         return this;
     }
 
@@ -157,7 +174,7 @@ public class DialogBuilder {
 
         } else if (dialogBodyFxml != null) {
             FXMLLoader loader = controller == null?
-                    Fxml.load(dialogBodyFxml): Fxml.load(dialogBodyFxml, controller);
+                    Fxml.load(dialogBodyFxml, resources): Fxml.load(dialogBodyFxml, resources, controller);
 
             Parent _dialogBody = loader.getRoot();
             _dialogBody.getStyleClass().add("dialog-body");
@@ -169,9 +186,18 @@ public class DialogBuilder {
         }
 
         if (buttons.isEmpty()) {
-            buttons.addAll(Arrays.asList(
+            if (!noDefaultButtons) {
+                buttons.addAll(Arrays.asList(
                     ButtonType.OK, ButtonType.CANCEL
-            ));
+                ));
+            } else {
+                final Node buttonBar = dialog.getDialogPane().lookup("ButtonBar");
+                if (buttonBar != null) {
+                    buttonBar.setVisible(false);
+                    buttonBar.setManaged(false);
+                    ((ButtonBar) buttonBar).setPrefHeight(0);
+                }
+            }
         }
 
         if (onStageShown != null) {
