@@ -13,7 +13,9 @@ public class LayoutBuilder {
 
     public static VBox vbox(double padding, double spacing, Pos alignment, Node... children) {
         VBox vBox = new VBox(spacing, children);
-        vBox.setPadding(new Insets(padding));
+        if (padding > 0) {
+            vBox.setPadding(new Insets(padding));
+        }
         if (alignment != null) {
             vBox.setAlignment(alignment);
         }
@@ -26,7 +28,9 @@ public class LayoutBuilder {
 
     public static HBox hbox(double padding, double spacing, Pos alignment, Node... children) {
         HBox hBox = new HBox(spacing, children);
-        hBox.setPadding(new Insets(padding));
+        if (padding > 0) {
+            hBox.setPadding(new Insets(padding));
+        }
         if (alignment != null) {
             hBox.setAlignment(alignment);
         }

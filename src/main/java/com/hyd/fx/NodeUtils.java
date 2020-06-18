@@ -1,5 +1,8 @@
 package com.hyd.fx;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -7,13 +10,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Shape;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * (description)
- * created at 2018/3/6
+ * Utility for node manipulation.
  *
  * @author yidin
  */
@@ -106,7 +104,7 @@ public class NodeUtils {
         return new double[]{node.getLayoutX(), node.getLayoutY()};
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static <T> T getUserData(Node node, String key) {
         if (node == null || node.getUserData() == null || !(node.getUserData() instanceof Map)) {
             return null;
@@ -152,5 +150,12 @@ public class NodeUtils {
         for (Node node : nodes) {
             node.setDisable(disable);
         }
+    }
+
+    public static void setBound(Region region, double x, double y, double width, double height) {
+        region.setLayoutX(x);
+        region.setLayoutY(y);
+        region.setPrefWidth(width);
+        region.setPrefHeight(width);
     }
 }

@@ -2,7 +2,11 @@ package com.hyd.fx.components;
 
 import com.hyd.fx.NodeUtils;
 import com.hyd.fx.Size;
-import com.hyd.fx.style.FxStyle;
+import com.hyd.fx.style.FxBorderBuilder;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -13,11 +17,6 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * 附加到任意一个 Pane 上，使其具有框选功能
@@ -113,7 +112,7 @@ public class SelectionArea extends Pane {
 
     private void initControl() {
         this.setBackground(Background.EMPTY);
-        this.setBorder(FxStyle.border(Color.WHITE, 1, BorderStrokeStyle.DASHED));
+        this.setBorder(FxBorderBuilder.border(Color.WHITE, 1, BorderStrokeStyle.DASHED));
         this.setVisible(false);
         this.disabledProperty().addListener((_ob, _old, _new) -> {
             if (_new) {
