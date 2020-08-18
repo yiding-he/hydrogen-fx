@@ -1,8 +1,10 @@
 package com.hyd.fx;
 
+import javafx.fxml.FXMLLoader;
+import javafx.util.Callback;
+
 import java.io.IOException;
 import java.util.ResourceBundle;
-import javafx.fxml.FXMLLoader;
 
 /**
  * (description)
@@ -55,5 +57,18 @@ public class Fxml {
 
     public static FXMLLoader load(String fxml, ResourceBundle resourceBundle) throws FxException {
         return load(fxml, resourceBundle, null);
+    }
+
+    public static FXMLLoader createFXMLLoader(
+        String fxml, ResourceBundle resourceBundle, Callback<Class<?>, Object> controllerFactory
+    ) {
+        FXMLLoader fxmlLoader = new FXMLLoader(Fxml.class.getResource(fxml));
+        if (resourceBundle != null) {
+            fxmlLoader.setResources(resourceBundle);
+        }
+        if (controllerFactory != null) {
+            fxmlLoader.setControllerFactory(controllerFactory);
+        }
+        return fxmlLoader;
     }
 }
