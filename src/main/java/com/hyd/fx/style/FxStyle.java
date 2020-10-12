@@ -1,9 +1,12 @@
 package com.hyd.fx.style;
 
-import javafx.geometry.Insets;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
+import com.hyd.fx.utils.Str;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javafx.scene.Node;
 
 /**
  * 帮助快速设置界面元素样式的工具类
@@ -12,57 +15,77 @@ import javafx.scene.paint.Paint;
  */
 public class FxStyle {
 
-    /**
-     * 生成一个背景对象
-     *
-     * @param webColor 背景色
-     *
-     * @return 背景对象
-     */
-    public static Background background(String webColor) {
-        return background(Color.web(webColor));
+    private final Map<String, String> styleElements = new LinkedHashMap<>();
+
+    public static FxStyle of(Node node) {
+        return new FxStyle(node);
     }
 
-    /**
-     * 生成一个背景对象
-     *
-     * @param color 背景色
-     *
-     * @return 背景对象
-     */
-    public static Background background(Paint color) {
-        return new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
+    public static void apply(Node node, String styleName, String styleValue) {
+        new FxStyle().putStyleValue(styleName, styleValue).setToNode(node);
     }
 
-    /**
-     * 生成一个边框对象
-     *
-     * @param color 边框颜色
-     * @param width 边框厚度
-     *
-     * @return 边框对象
-     */
-    public static Border border(Paint color, double width) {
-        return border(color, width, BorderStrokeStyle.SOLID);
+    public FxStyle() {
+        this("");
     }
 
-    public static Border border(Paint color, double width, BorderStrokeStyle strokeStyle) {
-        return new Border(new BorderStroke(color, strokeStyle, CornerRadii.EMPTY, new BorderWidths(width)));
+    public FxStyle(Node node) {
+        this(node.getStyle());
     }
 
-    public static Border dashedBorder(String color) {
-        return dashedBorder(Color.web(color));
+    public FxStyle(String styleString) {
+        Stream.of(styleString.split(";"))
+            .filter(Str::isNotBlank)
+            .forEach(property -> {
+                String[] kv = property.split(":", 2);
+                styleElements.put(kv[0], kv[1]);
+            });
     }
 
-    public static Border dashedBorder(Paint color) {
-        return new Border(new BorderStroke(color,
-                BorderStrokeStyle.DASHED, CornerRadii.EMPTY, new BorderWidths(1)));
+    public String getStyleValue(String styleName) {
+        return this.styleElements.get(styleName);
     }
 
-    public static void setBound(Region region, double x, double y, double width, double height) {
-        region.setLayoutX(x);
-        region.setLayoutY(y);
-        region.setPrefWidth(width);
-        region.setPrefHeight(width);
+    public FxStyle putStyleValue(String styleName, String styleValue) {
+        this.styleElements.put(styleName, styleValue);
+        return this;
+    }
+
+    public FxStyle putStyleValueIf(boolean condition, String styleName, String styleValue) {
+        if (condition) {
+            this.styleElements.put(styleName, styleValue);
+        }
+        return this;
+    }
+
+    public FxStyle putStyleValueIf(boolean condition, String styleName, Number styleValue) {
+        return putStyleValueIf(condition, styleName, String.valueOf(styleValue));
+    }
+
+    public FxStyle putStyleValue(String styleName, Number styleValue) {
+        return putStyleValue(styleName, String.valueOf(styleValue));
+    }
+
+    public Map<String, String> getStyleElements() {
+        return Collections.unmodifiableMap(styleElements);
+    }
+
+    public void mergeFrom(FxStyle fxStyle) {
+        fxStyle.styleElements.forEach((k,v) -> {
+            if (!this.styleElements.containsKey(k)) {
+                this.styleElements.put(k, v);
+            }
+        });
+    }
+
+    public void setToNode(Node node) {
+        this.mergeFrom(FxStyle.of(node));
+        node.setStyle(this.toStyleString());
+    }
+
+    public String toStyleString() {
+        return this.styleElements.entrySet().stream()
+            .map(entry -> entry.getKey() + ":" + entry.getValue())
+            .collect(Collectors.joining(";"));
     }
 }
