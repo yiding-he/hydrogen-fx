@@ -13,12 +13,16 @@ import javafx.util.StringConverter;
 public class IntegerSpinner extends Spinner<Integer> {
 
     public IntegerSpinner(
-        @NamedArg(value = "min", defaultValue = "0") int min,
-        @NamedArg(value = "max", defaultValue = "100") int max,
-        @NamedArg(value = "initialValue", defaultValue = "0") int initialValue,
-        @NamedArg(value = "amountToStepBy", defaultValue = "1") int amountToStepBy
+        @NamedArg(value = "min") Integer min,
+        @NamedArg(value = "max") Integer max,
+        @NamedArg(value = "initialValue", defaultValue = "0") Integer initialValue,
+        @NamedArg(value = "amountToStepBy", defaultValue = "1") Integer amountToStepBy
     ) {
-        super(min, max, initialValue, amountToStepBy);
+        super(
+            (min == null ? Integer.MIN_VALUE : min),
+            (max == null ? Integer.MAX_VALUE : max),
+            initialValue, amountToStepBy
+        );
 
         final TextField editor = getEditor();
         editor.focusedProperty().addListener((_ob, _old, _new) -> {
@@ -48,6 +52,13 @@ public class IntegerSpinner extends Spinner<Integer> {
             );
         }
         valueFactory.setValue(value);
+    }
+
+    public void setRangeAndValue(int min, int max, int value) {
+        IntegerSpinnerValueFactory valueFactory = getSpinnerValueFactory();
+        valueFactory.setMin(min);
+        valueFactory.setMax(max);
+        setValue(value);
     }
 
     public IntegerSpinnerValueFactory getSpinnerValueFactory() {
