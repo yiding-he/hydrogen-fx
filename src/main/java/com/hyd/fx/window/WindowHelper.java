@@ -1,0 +1,12 @@
+package com.hyd.fx.window;
+
+import javafx.scene.control.Dialog;
+import javafx.stage.Window;
+
+public class WindowHelper {
+
+    public static void relocateDialog(Dialog<?> dialog, Window owner) {
+        dialog.setX(Math.max(0, owner.getX() + owner.getWidth() / 2 - dialog.getWidth() / 2));
+        dialog.setY(Math.max(0, owner.getY() + owner.getHeight() / 2 - dialog.getHeight() / 2));
+    }
+}

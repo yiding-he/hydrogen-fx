@@ -2,14 +2,6 @@ package com.hyd.fx.dialog;
 
 import com.hyd.fx.Fxml;
 import com.hyd.fx.app.AppLogo;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.function.Consumer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,12 +10,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogEvent;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * (description)
@@ -165,7 +159,6 @@ public class DialogBuilder {
         if (owner != null) {
             dialog.initOwner(owner);
             dialog.initModality(Modality.WINDOW_MODAL);
-            adjustPosition(dialog, owner);
         }
 
         if (dialogBody != null) {
@@ -225,8 +218,4 @@ public class DialogBuilder {
         dialog.setResizable(resizable);
     }
 
-    private void adjustPosition(Dialog<?> dialog, Stage owner) {
-        dialog.setX(Math.max(0, owner.getX() + owner.getWidth() / 2 - dialog.getWidth() / 2));
-        dialog.setY(Math.max(0, owner.getY() + owner.getHeight() / 2 - dialog.getHeight() / 2));
-    }
 }
