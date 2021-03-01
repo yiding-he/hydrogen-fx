@@ -171,9 +171,25 @@ public class ZipFileReader implements Closeable {
     }
 
     /**
+     * 以流的方式读取指定文件内容
+     *
+     * @param entryName 包内路径
+     *
+     * @return 内容流
+     */
+    public InputStream readZipEntryStream(String entryName) throws IOException {
+        ZipEntry zipEntry = zipFile.getEntry(entryName);
+        if (zipEntry == null || zipEntry.isDirectory()) {
+            return null;
+        } else {
+            return zipFile.getInputStream(zipFile.getEntry(entryName));
+        }
+    }
+
+    /**
      * 读取包内指定文件的内容
      *
-     * @param entryName 包内文件位置
+     * @param entryName 包内路径
      *
      * @return 文件内容。如果 entryName 不是一个文件，则返回 null
      */
@@ -190,7 +206,7 @@ public class ZipFileReader implements Closeable {
     /**
      * 读取包内指定文件的内容
      *
-     * @param entryName 包内文件位置
+     * @param entryName 包内路径
      * @param charset   文本编码
      *
      * @return 文件内容。如果 entryName 不是一个文件，则返回 null
@@ -207,7 +223,7 @@ public class ZipFileReader implements Closeable {
     /**
      * 以 UTF-8 编码读取包内指定文件的内容
      *
-     * @param entryName 包内文件位置
+     * @param entryName 包内路径
      *
      * @return 文件内容。如果 entryName 不是一个文件，则返回 null
      */
@@ -253,7 +269,7 @@ public class ZipFileReader implements Closeable {
 
     private boolean match(String entryNamePattern, String zipEntryName) {
         return zipEntryName.equals(entryNamePattern) ||
-                FilenameUtils.wildcardMatch(zipEntryName, entryNamePattern);
+            FilenameUtils.wildcardMatch(zipEntryName, entryNamePattern);
     }
 
     /**
@@ -288,8 +304,8 @@ public class ZipFileReader implements Closeable {
         File file = FileUtils.getOrCreateFile(new File(filePath));
 
         try (
-                FileOutputStream fos = new FileOutputStream(file);
-                InputStream zis = getInputStream(zipEntry)
+            FileOutputStream fos = new FileOutputStream(file);
+            InputStream zis = getInputStream(zipEntry)
         ) {
             transfer(zis, fos);
         }
