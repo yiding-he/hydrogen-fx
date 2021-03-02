@@ -2,9 +2,13 @@ package com.hyd.fx.builders;
 
 import com.hyd.fx.utils.Nullable;
 import com.hyd.fx.utils.Str;
-import java.io.InputStream;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 
 /**
  * @author SYSTEM
@@ -23,6 +27,14 @@ public class ImageBuilder {
         }
 
         return new Image(resource);
+    }
+
+    public static Image imageFromFile(File file) throws IOException {
+        return new Image(Files.newInputStream(file.toPath()));
+    }
+
+    public static Image imageFromFile(String filePath) throws IOException {
+        return imageFromFile(new File(filePath));
     }
 
     @Nullable
