@@ -2,7 +2,9 @@ package com.hyd.fx.dialog.form;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  * (description)
@@ -27,7 +29,6 @@ public class TextAreaFormField extends FormField {
         this.rowCount = rowCount;
         this.vGrow = vGrow;
         this.textArea.setText(defaultValue);
-        this.textArea.setStyle("-fx-font-family: monospace");
         this.textArea.wrapTextProperty().bind(this.chbWrapText.selectedProperty());
 
         this.vBox.setSpacing(5);
