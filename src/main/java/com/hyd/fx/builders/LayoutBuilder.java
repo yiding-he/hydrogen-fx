@@ -3,6 +3,7 @@ package com.hyd.fx.builders;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -10,6 +11,20 @@ import javafx.scene.layout.VBox;
  * 用于快速创建一些 Node 对象
  */
 public class LayoutBuilder {
+
+    protected double padding, spacing;
+
+    protected Pos alignment;
+
+    protected Parent parent;
+
+    public Parent build() {
+        return this.parent;
+    }
+
+    protected void vBox(double padding, double spacing, Pos alignment, Node... children) {
+        this.parent = LayoutBuilder.vbox(padding, spacing, alignment, children);
+    }
 
     public static VBox vbox(double padding, double spacing, Pos alignment, Node... children) {
         VBox vBox = new VBox(spacing, children);
