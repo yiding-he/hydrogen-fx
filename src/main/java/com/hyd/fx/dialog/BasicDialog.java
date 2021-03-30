@@ -1,11 +1,14 @@
 package com.hyd.fx.dialog;
 
+import com.hyd.fx.window.WindowHelper;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import javafx.stage.Modality;
+import javafx.stage.Window;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +52,14 @@ public class BasicDialog extends Dialog<ButtonType> {
                 }
             }
         });
+    }
+
+    public void setOwner(Window owner) {
+        if (owner != null) {
+            initOwner(owner);
+            initModality(Modality.WINDOW_MODAL);
+            setOnShown(event -> WindowHelper.relocateDialog(this, owner));
+        }
     }
 
     public void setOnButtonClicked(ButtonType buttonType, Consumer<ActionEvent> onButtonClicked) {

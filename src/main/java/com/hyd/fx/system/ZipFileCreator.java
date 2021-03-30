@@ -1,12 +1,16 @@
 package com.hyd.fx.system;
 
 import com.hyd.fx.utils.Str;
+
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.function.Supplier;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import static com.hyd.fx.system.FileUtils.getOrCreateFile;
 
 /**
  * 创建新的 zip 文件。下面是一个例子：
@@ -48,12 +52,8 @@ public class ZipFileCreator implements Closeable {
         this.zipOutputStream = new ZipOutputStream(new FileOutputStream(file));
     }
 
-    static File getOrCreateFile(File file) throws IOException {
-        Path path = Paths.get(file.toURI());
-        if (!Files.exists(path)) {
-            Files.createDirectories(path.getParent());
-        }
-        return new File(file.getAbsolutePath());
+    public ZipFileCreator(Path path) throws IOException {
+        this.zipOutputStream = new ZipOutputStream(Files.newOutputStream(path));
     }
 
     ////////////////////////////////////////////////////////////// 配置项

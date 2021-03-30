@@ -50,7 +50,7 @@ public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
     return this;
   }
 
-  public ListCellFactory<T> withGraphicPropertt(Function<T, ObservableValue<Node>> graphicProperty) {
+  public ListCellFactory<T> withGraphicProperty(Function<T, ObservableValue<Node>> graphicProperty) {
     if (this.graphicFunction != null) {
       throw new IllegalStateException("You have already assigned graphicFunction.");
     }

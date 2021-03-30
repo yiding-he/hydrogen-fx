@@ -1,15 +1,20 @@
 package com.hyd.fx.dialog;
 
 import com.hyd.fx.app.AppLogo;
+import com.hyd.fx.app.AppPrimaryStage;
 import com.hyd.fx.app.AppThread;
 import com.hyd.fx.utils.Str;
-import java.util.Optional;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 /**
  * 提示/警告/错误对话框
@@ -49,6 +54,11 @@ public class AlertDialog {
                 alert.setTitle(title);
                 alert.setHeaderText(null);
 
+                if (AppPrimaryStage.getPrimaryStage() != null) {
+                    alert.initOwner(AppPrimaryStage.getPrimaryStage());
+                    alert.initModality(Modality.APPLICATION_MODAL);
+                }
+
                 Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
                 AppLogo.setStageLogo(stage);
 
@@ -69,6 +79,11 @@ public class AlertDialog {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message.trim());
+
+        if (AppPrimaryStage.getPrimaryStage() != null) {
+            alert.initOwner(AppPrimaryStage.getPrimaryStage());
+            alert.initModality(Modality.APPLICATION_MODAL);
+        }
 
         TextArea textArea = new TextArea(details);
         textArea.setEditable(false);
@@ -111,6 +126,11 @@ public class AlertDialog {
             alert.setTitle(title);
             alert.setHeaderText(null);
 
+            if (AppPrimaryStage.getPrimaryStage() != null) {
+                alert.initOwner(AppPrimaryStage.getPrimaryStage());
+                alert.initModality(Modality.APPLICATION_MODAL);
+            }
+
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             AppLogo.setStageLogo(stage);
 
@@ -144,6 +164,11 @@ public class AlertDialog {
         alert.setContentText(null);
         alert.getDialogPane().setContent(vBox);
         alert.setResizable(true);
+
+        if (AppPrimaryStage.getPrimaryStage() != null) {
+            alert.initOwner(AppPrimaryStage.getPrimaryStage());
+            alert.initModality(Modality.APPLICATION_MODAL);
+        }
 
         ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
         if (result == ButtonType.OK) {
