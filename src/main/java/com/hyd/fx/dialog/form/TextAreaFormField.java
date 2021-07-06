@@ -14,15 +14,15 @@ import javafx.scene.layout.VBox;
  */
 public class TextAreaFormField extends FormField {
 
-    private VBox vBox = new VBox();
+    private final VBox vBox = new VBox();
 
-    private TextArea textArea = new TextArea();
+    private final TextArea textArea = new TextArea();
 
-    private CheckBox chbWrapText = new CheckBox("自动换行");
+    private final CheckBox chbWrapText = new CheckBox("自动换行");
 
-    private boolean vGrow;
+    private final boolean vGrow;
 
-    private int rowCount;
+    private final int rowCount;
 
     public TextAreaFormField(String labelName, String defaultValue, int rowCount, boolean vGrow) {
         super(labelName);

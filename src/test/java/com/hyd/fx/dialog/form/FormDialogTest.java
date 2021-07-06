@@ -39,7 +39,7 @@ public class FormDialogTest extends Application {
         public MyFormDialog(Stage owner) {
             super(owner);
             addField(new TextFormField("你好", "我好"));
-            addField(new TextAreaFormField("大家好", "", 5, false));
+            addField(new TextAreaFormField("大家好", "", 5, true));
             addField(new IntegerSpinnerFormField("菠萝啤", 1, 100, 1, true));
         }
 
