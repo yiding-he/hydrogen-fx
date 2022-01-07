@@ -1,5 +1,6 @@
 package com.hyd.fx.dialog;
 
+import com.hyd.fx.FxException;
 import com.hyd.fx.Fxml;
 import com.hyd.fx.app.AppLogo;
 import javafx.application.Platform;
@@ -10,11 +11,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogEvent;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Callback;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -45,11 +48,15 @@ public class DialogBuilder {
 
     private Object controller;
 
+    private Callback<Class<?>, Object> controllerFactory;
+
     private ResourceBundle resources;
 
     private Map<ButtonType, Consumer<ActionEvent>> buttonHandlerMap = new HashMap<>();
 
     private EventHandler<DialogEvent> onStageShown;
+
+    private EventHandler<DialogEvent> onCloseRequest;
 
     private List<ButtonType> buttons = new ArrayList<>();
 
@@ -66,6 +73,11 @@ public class DialogBuilder {
         return this;
     }
 
+    public DialogBuilder onCloseRequest(EventHandler<DialogEvent> onCloseRequest) {
+        this.onCloseRequest = onCloseRequest;
+        return this;
+    }
+
     public DialogBuilder resources(ResourceBundle resources) {
         this.resources = resources;
         return this;
@@ -78,6 +90,11 @@ public class DialogBuilder {
 
     public DialogBuilder noDefaultButtons() {
         this.noDefaultButtons = true;
+        return this;
+    }
+
+    public DialogBuilder controllerFactory(Callback<Class<?>, Object> controllerFactory) {
+        this.controllerFactory = controllerFactory;
         return this;
     }
 
@@ -166,8 +183,20 @@ public class DialogBuilder {
             dialog.getDialogPane().setContent(dialogBody);
 
         } else if (dialogBodyFxml != null) {
-            FXMLLoader loader = controller == null?
-                    Fxml.load(dialogBodyFxml, resources): Fxml.load(dialogBodyFxml, resources, controller);
+
+            FXMLLoader loader;
+            if (controllerFactory != null) {
+                try {
+                    loader = Fxml.createFXMLLoader(dialogBodyFxml, resources, controllerFactory);
+                    loader.load();
+                } catch (Exception e) {
+                    throw FxException.wrap(e);
+                }
+            } else if (controller != null) {
+                loader = Fxml.load(dialogBodyFxml, resources, controller);
+            } else {
+                loader = Fxml.load(dialogBodyFxml, resources);
+            }
 
             Parent _dialogBody = loader.getRoot();
             _dialogBody.getStyleClass().add("dialog-body");
@@ -194,16 +223,21 @@ public class DialogBuilder {
         }
 
         if (onStageShown != null) {
-            dialog.setOnShown(event -> {
-                new Thread(() -> {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        // 如果执行得过快会导致一些操作无法生效
-                    }
-                    Platform.runLater(() -> onStageShown.handle(event));
-                }).start();
-            });
+            dialog.setOnShown(event -> new Thread(() -> {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    // 如果执行得过快会导致一些操作无法生效
+                }
+                Platform.runLater(() -> onStageShown.handle(event));
+            }).start());
+        }
+
+        if (onCloseRequest != null) {
+            dialog.setOnCloseRequest(onCloseRequest);
+        } else {
+            // TODO : why not working
+            dialog.setOnCloseRequest(event -> ((Dialog<?>)event.getSource()).close());
         }
 
         Window window = dialog.getDialogPane().getScene().getWindow();

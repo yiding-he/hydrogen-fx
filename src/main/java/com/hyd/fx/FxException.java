@@ -8,6 +8,10 @@ package com.hyd.fx;
  */
 public class FxException extends RuntimeException {
 
+    public static FxException wrap(Throwable t) {
+        return t instanceof FxException ? (FxException) t : new FxException(t);
+    }
+
     public FxException() {
     }
 
