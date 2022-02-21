@@ -11,105 +11,108 @@ import java.util.function.Function;
 
 public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
 
-  private Function<T, String> textFunction;
+    private Function<T, String> textFunction;
 
-  private Function<T, ObservableValue<String>> textProperty;
+    private Function<T, ObservableValue<String>> textProperty;
 
-  private Function<T, Node> graphicFunction;
+    private Function<T, Node> graphicFunction;
 
-  private Function<T, ObservableValue<Node>> graphicProperty;
+    private Function<T, ObservableValue<Node>> graphicProperty;
 
-  private Consumer<ListCell<T>> cellInitializer;
+    private Consumer<ListCell<T>> cellInitializer;
 
-  public ListCellFactory<T> setCellInitializer(Consumer<ListCell<T>> cellInitializer) {
-    this.cellInitializer = cellInitializer;
-    return this;
-  }
-
-  public ListCellFactory<T> withTextFunction(Function<T, String> toStringFunction) {
-    if (this.textProperty != null) {
-      throw new IllegalStateException("You have already assigned textProperty.");
+    public ListCellFactory<T> setCellInitializer(Consumer<ListCell<T>> cellInitializer) {
+        this.cellInitializer = cellInitializer;
+        return this;
     }
-    this.textFunction = toStringFunction;
-    return this;
-  }
 
-  public ListCellFactory<T> withTextProperty(Function<T, ObservableValue<String>> toStringProperty) {
-    if (this.textFunction != null) {
-      throw new IllegalStateException("You have already assigned textFunction.");
-    }
-    this.textProperty = toStringProperty;
-    return this;
-  }
-
-  public ListCellFactory<T> withGraphicFunction(Function<T, Node> graphicFunction) {
-    if (this.graphicProperty != null) {
-      throw new IllegalStateException("You have already assigned graphicProperty.");
-    }
-    this.graphicFunction = graphicFunction;
-    return this;
-  }
-
-  public ListCellFactory<T> withGraphicProperty(Function<T, ObservableValue<Node>> graphicProperty) {
-    if (this.graphicFunction != null) {
-      throw new IllegalStateException("You have already assigned graphicFunction.");
-    }
-    this.graphicProperty = graphicProperty;
-    return this;
-  }
-
-  @Override
-  public ListCell<T> call(ListView<T> param) {
-
-    ListCell<T> listCell = new ListCell<T>() {
-      @Override
-      protected void updateItem(T item, boolean empty) {
-        super.updateItem(item, empty);
-
-        if (textProperty().isBound()) {
-          textProperty().unbind();
+    public ListCellFactory<T> withTextFunction(Function<T, String> toStringFunction) {
+        if (this.textProperty != null) {
+            throw new IllegalStateException("You have already assigned textProperty.");
         }
-        if (graphicProperty().isBound()) {
-          graphicProperty().unbind();
+        this.textFunction = toStringFunction;
+        return this;
+    }
+
+    public ListCellFactory<T> withTextProperty(Function<T, ObservableValue<String>> toStringProperty) {
+        if (this.textFunction != null) {
+            throw new IllegalStateException("You have already assigned textFunction.");
+        }
+        this.textProperty = toStringProperty;
+        return this;
+    }
+
+    public ListCellFactory<T> withGraphicFunction(Function<T, Node> graphicFunction) {
+        if (this.graphicProperty != null) {
+            throw new IllegalStateException("You have already assigned graphicProperty.");
+        }
+        this.graphicFunction = graphicFunction;
+        return this;
+    }
+
+    public ListCellFactory<T> withGraphicProperty(Function<T, ObservableValue<Node>> graphicProperty) {
+        if (this.graphicFunction != null) {
+            throw new IllegalStateException("You have already assigned graphicFunction.");
+        }
+        this.graphicProperty = graphicProperty;
+        return this;
+    }
+
+    @Override
+    public ListCell<T> call(ListView<T> param) {
+        return newCell();
+    }
+
+    public ListCell<T> newCell() {
+        ListCell<T> listCell = new ListCell<T>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (textProperty().isBound()) {
+                    textProperty().unbind();
+                }
+                if (graphicProperty().isBound()) {
+                    graphicProperty().unbind();
+                }
+
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setCellText(this, item);
+                    setCellGraphic(this, item);
+                }
+            }
+        };
+
+        if (cellInitializer != null) {
+            cellInitializer.accept(listCell);
         }
 
-        if (empty) {
-          setText(null);
-          setGraphic(null);
-        } else {
-          setCellText(this, item);
-          setCellGraphic(this, item);
+        return listCell;
+    }
+
+    private void setCellGraphic(ListCell<T> cell, T item) {
+        if (graphicFunction != null) {
+            cell.setGraphic(graphicFunction.apply(item));
         }
-      }
-    };
-
-    if (cellInitializer != null) {
-      cellInitializer.accept(listCell);
+        if (graphicProperty != null) {
+            cell.graphicProperty().unbind();
+            cell.graphicProperty().bind(graphicProperty.apply(item));
+        }
     }
 
-    return listCell;
-  }
-
-  private void setCellGraphic(ListCell<T> cell, T item) {
-    if (graphicFunction != null) {
-      cell.setGraphic(graphicFunction.apply(item));
+    private void setCellText(ListCell<T> cell, T item) {
+        if (textFunction != null) {
+            cell.setText(textFunction.apply(item));
+        }
+        if (textProperty != null) {
+            cell.textProperty().unbind();
+            cell.textProperty().bind(textProperty.apply(item));
+        }
+        if (textFunction == null && textProperty == null) {
+            cell.setText(String.valueOf(item));
+        }
     }
-    if (graphicProperty != null) {
-      cell.graphicProperty().unbind();
-      cell.graphicProperty().bind(graphicProperty.apply(item));
-    }
-  }
-
-  private void setCellText(ListCell<T> cell, T item) {
-    if (textFunction != null) {
-      cell.setText(textFunction.apply(item));
-    }
-    if (textProperty != null) {
-      cell.textProperty().unbind();
-      cell.textProperty().bind(textProperty.apply(item));
-    }
-    if (textFunction == null && textProperty == null) {
-      cell.setText(String.valueOf(item));
-    }
-  }
 }

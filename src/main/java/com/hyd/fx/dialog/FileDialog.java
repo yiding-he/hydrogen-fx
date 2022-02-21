@@ -3,7 +3,7 @@ package com.hyd.fx.dialog;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.File;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class FileDialog {
         FileDialog.initDirectory = initDirectory;
     }
 
-    public static File showOpenDirectory(Stage stage, String title, String initPath) {
+    public static File showOpenDirectory(Window owner, String title, String initPath) {
         File initialDirectory = new File(initPath);
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -32,49 +32,49 @@ public class FileDialog {
             directoryChooser.setInitialDirectory(initialDirectory);
         }
 
-        return directoryChooser.showDialog(stage);
+        return directoryChooser.showDialog(owner);
     }
 
     /**
      * 显示一个打开文件对话框
      *
-     * @param stage   父窗口（可选）
+     * @param owner   父窗口（可选）
      * @param title   标题
      * @param ext     文件扩展名
      * @param extName 文件扩展名描述
      *
      * @return 如果成功选择了文件，则返回文件对象，否则返回 null
      */
-    public static File showOpenFile(Stage stage, String title, String ext, String extName) {
-        return showOpenFile(stage, ".", title, ext, extName);
+    public static File showOpenFile(Window owner, String title, String ext, String extName) {
+        return showOpenFile(owner, ".", title, ext, extName);
     }
 
-    public static File showOpenFile(Stage stage, String initPath, String title, String ext, String extName) {
+    public static File showOpenFile(Window owner, String initPath, String title, String ext, String extName) {
         Map<String, String> extAndNames = new HashMap<>();
         extAndNames.put(ext, extName);
         File initFolder = new File(initPath);
-        return showFileChooser(DialogType.OpenFile, initFolder, stage, title, extAndNames, "");
+        return showFileChooser(DialogType.OpenFile, initFolder, owner, title, extAndNames, "");
     }
 
     /**
      * 显示一个保存文件对话框
      *
-     * @param stage   父窗口（可选）
+     * @param owner   父窗口（可选）
      * @param title   标题
      * @param ext     文件扩展名
      * @param extName 文件扩展名描述
      *
      * @return 如果成功选择了文件，则返回文件对象，否则返回 null
      */
-    public static File showSaveFile(Stage stage, String title, String ext, String extName, String defaultFileName) {
-        return showSaveFile(stage, ".", title, ext, extName, defaultFileName);
+    public static File showSaveFile(Window owner, String title, String ext, String extName, String defaultFileName) {
+        return showSaveFile(owner, ".", title, ext, extName, defaultFileName);
     }
 
-    public static File showSaveFile(Stage stage, String initPath, String title, String ext, String extName, String defaultFileName) {
+    public static File showSaveFile(Window owner, String initPath, String title, String ext, String extName, String defaultFileName) {
         Map<String, String> extAndNames = new HashMap<>();
         extAndNames.put(ext, extName);
         File initFolder = new File(initPath);
-        return showFileChooser(DialogType.SaveFile, initFolder, stage, title, extAndNames, defaultFileName);
+        return showFileChooser(DialogType.SaveFile, initFolder, owner, title, extAndNames, defaultFileName);
     }
 
     /**
@@ -82,7 +82,7 @@ public class FileDialog {
      *
      * @param dialogType      对话框类型
      * @param initFolder      初始目录（可选）
-     * @param stage           父窗口（可选）
+     * @param owner           父窗口（可选）
      * @param title           对话框标题
      * @param extAndNames     文件扩展名及对应的描述（可选）
      * @param defaultFileName 缺省文件名（可选）
@@ -90,7 +90,7 @@ public class FileDialog {
      * @return 用户选择的文件
      */
     public static File showFileChooser(
-            DialogType dialogType, File initFolder, Stage stage,
+            DialogType dialogType, File initFolder, Window owner,
             String title, Map<String, String> extAndNames, String defaultFileName) {
 
         FileChooser fileChooser = new FileChooser();
@@ -117,7 +117,7 @@ public class FileDialog {
                 fileChooser.setInitialDirectory(initDirectory);
             }
 
-            selectedFile = fileChooser.showOpenDialog(stage);
+            selectedFile = fileChooser.showOpenDialog(owner);
             if (selectedFile != null) {
                 initDirectory = selectedFile.getParentFile();
             }
@@ -128,7 +128,7 @@ public class FileDialog {
                 fileChooser.setInitialDirectory(initDirectory);
             }
 
-            selectedFile = fileChooser.showSaveDialog(stage);
+            selectedFile = fileChooser.showSaveDialog(owner);
 
             if (selectedFile != null) {
 
