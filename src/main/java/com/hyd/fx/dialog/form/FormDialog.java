@@ -1,19 +1,27 @@
 package com.hyd.fx.dialog.form;
 
-import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
-
 import com.hyd.fx.app.AppLogo;
-import java.util.ArrayList;
-import java.util.List;
+import com.hyd.fx.dialog.AlertDialog;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
-import javafx.geometry.*;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
-import javafx.stage.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
 /**
  * (description)
@@ -138,15 +146,26 @@ public abstract class FormDialog extends Stage {
 
     //////////////////////////////////////////////////////////////
 
-    private List<FormField> formFields = new ArrayList<>();
+    private final List<FormField<?>> formFields = new ArrayList<>();
 
-    protected void addField(FormField formField) {
+    protected void addField(FormField<?> formField) {
         this.formFields.add(formField);
         layoutFormField(formField, this.formFields.size() - 1);
     }
 
-    private void layoutFormField(FormField formField, int rowIndex) {
+    private void layoutFormField(FormField<?> formField, int rowIndex) {
         formField.renderTo(this.contentPane, rowIndex);
     }
 
+    protected boolean validateFields() {
+        for (FormField<?> field : formFields) {
+            try {
+                field.validate();
+            } catch (Exception e) {
+                AlertDialog.error("错误", e.getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
 }

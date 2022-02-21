@@ -30,8 +30,12 @@ public class IntegerSpinner extends Spinner<Integer> {
                 SpinnerValueFactory<Integer> valueFactory = getValueFactory();
                 StringConverter<Integer> converter = valueFactory.getConverter();
                 try {
+                    String text = editor.getText();
+                    if (text == null || text.trim().length() == 0) {
+                        text = String.valueOf(getMin());
+                    }
                     valueFactory.setValue(
-                        Math.min(getMax(), Math.max(getMin(), converter.fromString(editor.getText())))
+                        Math.min(getMax(), Math.max(getMin(), converter.fromString(text)))
                     );
                 } catch (NumberFormatException e) {
                     // ignore this error
@@ -54,11 +58,12 @@ public class IntegerSpinner extends Spinner<Integer> {
         valueFactory.setValue(value);
     }
 
-    public void setRangeAndValue(int min, int max, int value) {
-        IntegerSpinnerValueFactory valueFactory = getSpinnerValueFactory();
-        valueFactory.setMin(min);
-        valueFactory.setMax(max);
-        setValue(value);
+    public void setMax(int max) {
+        getSpinnerValueFactory().setMax(max);
+    }
+
+    public void setMin(int min) {
+        getSpinnerValueFactory().setMin(min);
     }
 
     public IntegerSpinnerValueFactory getSpinnerValueFactory() {

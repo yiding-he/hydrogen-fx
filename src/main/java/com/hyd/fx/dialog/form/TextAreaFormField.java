@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
  *
  * @author yidin
  */
-public class TextAreaFormField extends FormField {
+public class TextAreaFormField extends FormField<TextAreaFormField> {
 
     private final VBox vBox = new VBox();
 
@@ -20,22 +20,33 @@ public class TextAreaFormField extends FormField {
 
     private final CheckBox chbWrapText = new CheckBox("自动换行");
 
-    private final boolean vGrow;
+    private boolean vGrow;
 
-    private final int rowCount;
+    private int rowCount = 5;
 
-    public TextAreaFormField(String labelName, String defaultValue, int rowCount, boolean vGrow) {
-        super(labelName);
-        this.rowCount = rowCount;
-        this.vGrow = vGrow;
-        this.textArea.setText(defaultValue);
+    public TextAreaFormField() {
         this.textArea.wrapTextProperty().bind(this.chbWrapText.selectedProperty());
-
         this.vBox.setSpacing(5);
         this.vBox.getChildren().addAll(textArea, chbWrapText);
 
         VBox.setVgrow(textArea, Priority.ALWAYS);
     }
+
+    public TextAreaFormField text(String text) {
+        this.textArea.setText(text);
+        return this;
+    }
+
+    public TextAreaFormField vGrow(boolean vGrow) {
+        this.vGrow = vGrow;
+        return this;
+    }
+
+    public TextAreaFormField rowCount(int rowCount) {
+        this.rowCount = rowCount;
+        return this;
+    }
+
 
     public String getText() {
         return this.textArea.getText();

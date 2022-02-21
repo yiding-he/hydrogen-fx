@@ -38,14 +38,24 @@ public class FormDialogTest extends Application {
 
         public MyFormDialog(Stage owner) {
             super(owner);
-            addField(new TextFormField("你好", "我好"));
-            addField(new TextAreaFormField("大家好", "", 5, true));
-            addField(new IntegerSpinnerFormField("菠萝啤", 1, 100, 1, true));
+            addField(new TextFormField().label("名字").text("1231231").validation(f -> {
+                if (f.getText().isEmpty()) {
+                    throw new RuntimeException("名字不能为空");
+                }
+            }));
+            addField(new TextAreaFormField().label("大家好").rowCount(5).vGrow(true));
+            addField(new IntegerSpinnerFormField().label("大小").min(1).max(1000).value(444).editable(true).validation(f -> {
+                if (f.getValue() < 300) {
+                    throw new RuntimeException("大小不能小于300");
+                }
+            }));
         }
 
         @Override
         protected void okButtonClicked(ActionEvent event) {
-            close();
+            if (validateFields()) {
+                close();
+            }
         }
     }
 }

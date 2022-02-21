@@ -3,13 +3,18 @@ package com.hyd.fx.dialog.form;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.GridPane;
 
-public class CheckBoxFormField extends FormField {
+public class CheckBoxFormField extends FormField<CheckBoxFormField> {
 
     private final CheckBox checkBox;
 
-    public CheckBoxFormField(String labelName) {
-        super("");
-        this.checkBox = new CheckBox(labelName);
+    public CheckBoxFormField() {
+        this.checkBox = new CheckBox();
+    }
+
+    @Override
+    public CheckBoxFormField label(String labelText) {
+        this.checkBox.setText(labelText);
+        return this;
     }
 
     public CheckBox getCheckBox() {
@@ -20,8 +25,9 @@ public class CheckBoxFormField extends FormField {
         return checkBox.isSelected();
     }
 
-    public void setSelected(boolean selected) {
+    public CheckBoxFormField selected(boolean selected) {
         this.checkBox.setSelected(selected);
+        return this;
     }
 
     @Override

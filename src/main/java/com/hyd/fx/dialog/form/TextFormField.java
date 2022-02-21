@@ -10,13 +10,16 @@ import javafx.scene.layout.Priority;
  *
  * @author yidin
  */
-public class TextFormField extends FormField {
+public class TextFormField extends FormField<TextFormField> {
 
     private final TextField textField = new TextField();
 
-    public TextFormField(String labelName, String defaultValue) {
-        super(labelName);
-        this.textField.setText(defaultValue);
+    public TextFormField() {
+    }
+
+    public TextFormField text(String text) {
+        this.textField.setText(text);
+        return this;
     }
 
     public TextField getTextField() {

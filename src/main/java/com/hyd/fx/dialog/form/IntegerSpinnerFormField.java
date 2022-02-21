@@ -6,18 +6,31 @@ import javafx.scene.layout.GridPane;
 /**
  * @author yidin
  */
-public class IntegerSpinnerFormField extends FormField {
+public class IntegerSpinnerFormField extends FormField<IntegerSpinnerFormField> {
 
-    private final IntegerSpinner spinner;
+    private final IntegerSpinner spinner = new IntegerSpinner(0, 100, 0, 1);
 
-    public IntegerSpinnerFormField(String labelName, int min, int max, int init, boolean editable) {
-        super(labelName);
-        this.spinner = new IntegerSpinner(min, max, init, 1);
-        this.spinner.setEditable(editable);
+    public IntegerSpinnerFormField() {
     }
 
-    public void setEditable(boolean editable) {
+    public IntegerSpinnerFormField min(int min) {
+        this.spinner.setMin(min);
+        return this;
+    }
+
+    public IntegerSpinnerFormField max(int max) {
+        this.spinner.setMax(max);
+        return this;
+    }
+
+    public IntegerSpinnerFormField value(int value) {
+        this.spinner.setValue(value);
+        return this;
+    }
+
+    public IntegerSpinnerFormField editable(boolean editable) {
         this.spinner.setEditable(editable);
+        return this;
     }
 
     public int getValue() {
