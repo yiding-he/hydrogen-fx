@@ -1,7 +1,9 @@
 package com.hyd.fx.builders;
 
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
 
 /**
@@ -50,7 +52,9 @@ public class MenuBuilder {
 
     public static MenuItem menuItem(String name, Node icon, String accelerator, Runnable action, boolean disabled) {
         MenuItem menuItem = new MenuItem(name);
-        menuItem.setOnAction(event -> action.run());
+        if (action != null) {
+            menuItem.setOnAction(event -> action.run());
+        }
 
         if (icon != null) {
             menuItem.setGraphic(icon);

@@ -35,7 +35,7 @@ public abstract class FormField<T extends FormField<?>> {
         return label;
     }
 
-    protected T validation(Consumer<T> validation) {
+    public T validation(Consumer<T> validation) {
         this.validation = validation;
         return (T)this;
     }

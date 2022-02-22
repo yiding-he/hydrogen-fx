@@ -2,8 +2,10 @@ package com.hyd.fx.cells;
 
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 
 import java.util.function.Consumer;
@@ -20,6 +22,13 @@ public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
     private Function<T, ObservableValue<Node>> graphicProperty;
 
     private Consumer<ListCell<T>> cellInitializer;
+
+    private Function<T, ContextMenu> contextMenuBuilder;
+
+    public ListCellFactory<T> setContextMenuBuilder(Function<T, ContextMenu> contextMenuBuilder) {
+        this.contextMenuBuilder = contextMenuBuilder;
+        return this;
+    }
 
     public ListCellFactory<T> setCellInitializer(Consumer<ListCell<T>> cellInitializer) {
         this.cellInitializer = cellInitializer;
@@ -63,6 +72,7 @@ public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
         return newCell();
     }
 
+    @SuppressWarnings("unchecked")
     public ListCell<T> newCell() {
         ListCell<T> listCell = new ListCell<T>() {
             @Override
@@ -88,6 +98,18 @@ public class ListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
 
         if (cellInitializer != null) {
             cellInitializer.accept(listCell);
+        }
+
+        if (contextMenuBuilder != null) {
+            listCell.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                ListCell<T> cell = (ListCell<T>) event.getSource();
+                T item = cell.getItem();
+                if (item == null) {
+                    cell.setContextMenu(null);
+                } else {
+                    cell.setContextMenu(contextMenuBuilder.apply(item));
+                }
+            });
         }
 
         return listCell;
