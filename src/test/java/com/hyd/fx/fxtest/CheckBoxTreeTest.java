@@ -10,31 +10,41 @@ import javafx.stage.Stage;
 /**
  * @author yiding.he
  */
-public class CheckBoxTreeTest extends Application {
+public class CheckBoxTreeTest {
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setScene(new Scene(tree(), 400, 300));
-        primaryStage.show();
+    public static void main(String[] args) {
+        Application.launch(CheckBoxTreeApp.class);
     }
 
-    @SuppressWarnings("unchecked")
-    private TreeView<String> tree() {
-        TreeView<String> treeView = new TreeView<>();
-        // create the tree model
-        CheckBoxTreeItem<String> jonathanGiles = new CheckBoxTreeItem<String>("Jonathan");
-        CheckBoxTreeItem<String> juliaGiles = new CheckBoxTreeItem<String>("Julia");
-        CheckBoxTreeItem<String> mattGiles = new CheckBoxTreeItem<String>("Matt");
-        CheckBoxTreeItem<String> sueGiles = new CheckBoxTreeItem<String>("Sue");
-        CheckBoxTreeItem<String> ianGiles = new CheckBoxTreeItem<String>("Ian");
+    public static class CheckBoxTreeApp extends Application {
 
-        CheckBoxTreeItem<String> gilesFamily = new CheckBoxTreeItem<String>("Giles Family");
-        gilesFamily.setExpanded(true);
-        gilesFamily.getChildren().addAll(jonathanGiles, juliaGiles, mattGiles, sueGiles, ianGiles);
-        treeView.setRoot(gilesFamily);
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+            primaryStage.setScene(new Scene(tree(), 400, 300));
+            primaryStage.show();
+        }
 
-        // set the cell factory
-        treeView.setCellFactory(CheckBoxTreeCell.<String>forTreeView());
-        return treeView;
+        @SuppressWarnings("unchecked")
+        private TreeView<String> tree() {
+            TreeView<String> treeView = new TreeView<>();
+            // create the tree model
+            CheckBoxTreeItem<String> jonathanGiles = new CheckBoxTreeItem<String>("Jonathan");
+            CheckBoxTreeItem<String> juliaGiles = new CheckBoxTreeItem<String>("Julia");
+            CheckBoxTreeItem<String> mattGiles = new CheckBoxTreeItem<String>("Matt");
+            CheckBoxTreeItem<String> sueGiles = new CheckBoxTreeItem<String>("Sue");
+            CheckBoxTreeItem<String> ianGiles = new CheckBoxTreeItem<String>("Ian");
+
+            CheckBoxTreeItem<String> gilesFamily = new CheckBoxTreeItem<String>("Giles Family");
+            gilesFamily.setExpanded(true);
+            gilesFamily.getChildren().addAll(jonathanGiles, juliaGiles, mattGiles, sueGiles, ianGiles);
+            treeView.setRoot(gilesFamily);
+
+            // set the cell factory
+            treeView.setCellFactory(CheckBoxTreeCell.<String>forTreeView());
+            return treeView;
+        }
+
     }
+
 }
+
