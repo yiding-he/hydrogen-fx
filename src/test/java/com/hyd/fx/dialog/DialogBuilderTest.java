@@ -17,51 +17,58 @@ import javafx.stage.Stage;
  *
  * @author yidin
  */
-public class DialogBuilderTest extends Application {
+public class DialogBuilderTest {
 
-    public String label1DefaultValue = "Hello!";
-
-    public Label label1;
-
-    public Label label2;
-
-    public Label label3;
-
-    public TextField txtUsername;
-
-    public void initialize() {
-        this.label1.setText(label1DefaultValue);
+    public static void main(String[] args) {
+        Application.launch(DialogBuilderTestApp.class);
     }
 
     ////////////////////////////////////////////////////////////
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Button button = new Button("Test DialogBuilder");
-        button.setOnAction(actionEvent -> createDialog());
+    public static class DialogBuilderTestApp extends Application {
 
-        BorderPane borderPane = new BorderPane(button);
-        borderPane.setStyle("-fx-padding: 50");
+        public String label1DefaultValue = "Hello!";
 
-        AppPrimaryStage.setPrimaryStage(primaryStage);
-        primaryStage.setScene(new Scene(borderPane));
-        primaryStage.show();
-    }
+        public Label label1;
 
-    private void createDialog() {
+        public Label label2;
 
-        ButtonType buttonType = new DialogBuilder()
-            .owner(AppPrimaryStage.getPrimaryStage())
-            .title("Hello!")
-            .body("/components/dialog-body.fxml", this)
-            .resizable(true)
-            .buttons(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL)
-            .onNoButtonClicked(Event::consume)
-            .onStageShown(event -> txtUsername.requestFocus())
-            .showAndWait()
-            .orElse(ButtonType.CANCEL);
+        public Label label3;
 
-        System.out.println(buttonType);
-        System.out.println(label1.getText());
+        public TextField txtUsername;
+
+        public void initialize() {
+            this.label1.setText(label1DefaultValue);
+        }
+
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+            Button button = new Button("Test DialogBuilder");
+            button.setOnAction(actionEvent -> createDialog());
+
+            BorderPane borderPane = new BorderPane(button);
+            borderPane.setStyle("-fx-padding: 50");
+
+            AppPrimaryStage.setPrimaryStage(primaryStage);
+            primaryStage.setScene(new Scene(borderPane));
+            primaryStage.show();
+        }
+
+        private void createDialog() {
+
+            ButtonType buttonType = new DialogBuilder()
+                .owner(AppPrimaryStage.getPrimaryStage())
+                .title("Hello!")
+                .body("/components/dialog-body.fxml", this)
+                .resizable(true)
+                .buttons(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL)
+                .onNoButtonClicked(Event::consume)
+                .onStageShown(event -> txtUsername.requestFocus())
+                .showAndWait()
+                .orElse(ButtonType.CANCEL);
+
+            System.out.println(buttonType);
+            System.out.println(label1.getText());
+        }
     }
 }

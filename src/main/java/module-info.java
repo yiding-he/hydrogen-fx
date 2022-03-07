@@ -20,4 +20,5 @@ module com.hyd.fx {
     exports com.hyd.fx.style;
     exports com.hyd.fx.system;
     exports com.hyd.fx.utils;
+    exports com.hyd.fx.window;
 }
