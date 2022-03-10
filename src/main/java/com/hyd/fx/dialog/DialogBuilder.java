@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Callback;
 
+import java.net.URL;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -32,7 +33,7 @@ public class DialogBuilder {
 
     private Parent dialogBody;
 
-    private String dialogBodyFxml;
+    private URL fxmlUrl;
 
     private String css;
 
@@ -52,7 +53,7 @@ public class DialogBuilder {
 
     private ResourceBundle resources;
 
-    private Map<ButtonType, Consumer<ActionEvent>> buttonHandlerMap = new HashMap<>();
+    private final Map<ButtonType, Consumer<ActionEvent>> buttonHandlerMap = new HashMap<>();
 
     private EventHandler<DialogEvent> onStageShown;
 
@@ -124,13 +125,24 @@ public class DialogBuilder {
         return this;
     }
 
-    public DialogBuilder body(String fxml) {
-        this.dialogBodyFxml = fxml;
+    public DialogBuilder body(URL resourceUrl) {
+        this.fxmlUrl = resourceUrl;
         return this;
     }
 
+    public DialogBuilder body(URL resourceUrl, Object controller) {
+        this.fxmlUrl = resourceUrl;
+        this.controller = controller;
+        return this;
+    }
+
+    @Deprecated
+    public DialogBuilder body(String fxml) {
+        return this;
+    }
+
+    @Deprecated
     public DialogBuilder body(String fxml, Object controller) {
-        this.dialogBodyFxml = fxml;
         this.controller = controller;
         return this;
     }
@@ -182,20 +194,20 @@ public class DialogBuilder {
             dialogBody.getStyleClass().add("dialog-body");
             dialog.getDialogPane().setContent(dialogBody);
 
-        } else if (dialogBodyFxml != null) {
+        } else if (fxmlUrl != null) {
 
             FXMLLoader loader;
             if (controllerFactory != null) {
                 try {
-                    loader = Fxml.createFXMLLoader(dialogBodyFxml, resources, controllerFactory);
+                    loader = Fxml.createFXMLLoader(fxmlUrl, resources, controllerFactory);
                     loader.load();
                 } catch (Exception e) {
                     throw FxException.wrap(e);
                 }
             } else if (controller != null) {
-                loader = Fxml.load(dialogBodyFxml, resources, controller);
+                loader = Fxml.load(fxmlUrl, resources, controller);
             } else {
-                loader = Fxml.load(dialogBodyFxml, resources);
+                loader = Fxml.load(fxmlUrl, resources);
             }
 
             Parent _dialogBody = loader.getRoot();
@@ -233,12 +245,10 @@ public class DialogBuilder {
             }).start());
         }
 
-        if (onCloseRequest != null) {
-            dialog.setOnCloseRequest(onCloseRequest);
-        } else {
-            // TODO : why not working
-            dialog.setOnCloseRequest(event -> ((Dialog<?>)event.getSource()).close());
-        }
+        dialog.setOnCloseRequest(Objects.requireNonNullElseGet(
+            onCloseRequest,
+            () -> event -> ((Dialog<?>) event.getSource()).close()
+        ));
 
         Window window = dialog.getDialogPane().getScene().getWindow();
         if (window instanceof Stage && logo != null) {
