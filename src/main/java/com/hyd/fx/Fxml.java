@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
@@ -26,9 +27,13 @@ public class Fxml {
      * @throws FxException 如果加载失败
      */
     public static FXMLLoader load(String fxml, ResourceBundle resourceBundle, Object controller) throws FxException {
+        return load(Fxml.class.getResource(fxml), resourceBundle, controller);
+    }
+
+    public static FXMLLoader load(URL fxmlUrl, ResourceBundle resourceBundle, Object controller) throws FxException {
         try {
             FXMLLoader loader = createFXMLLoader();
-            loader.setLocation(Fxml.class.getResource(fxml));
+            loader.setLocation(fxmlUrl);
 
             if (resourceBundle != null) {
                 loader.setResources(resourceBundle);
@@ -59,10 +64,27 @@ public class Fxml {
         return load(fxml, resourceBundle, null);
     }
 
+    public static FXMLLoader load(URL fxmlUrl, ResourceBundle resourceBundle) throws FxException {
+        return load(fxmlUrl, resourceBundle, null);
+    }
+
     public static FXMLLoader createFXMLLoader(
         String fxml, ResourceBundle resourceBundle, Callback<Class<?>, Object> controllerFactory
     ) {
         FXMLLoader fxmlLoader = new FXMLLoader(Fxml.class.getResource(fxml));
+        if (resourceBundle != null) {
+            fxmlLoader.setResources(resourceBundle);
+        }
+        if (controllerFactory != null) {
+            fxmlLoader.setControllerFactory(controllerFactory);
+        }
+        return fxmlLoader;
+    }
+
+    public static FXMLLoader createFXMLLoader(
+        URL fxmlUrl, ResourceBundle resourceBundle, Callback<Class<?>, Object> controllerFactory
+    ) {
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
         if (resourceBundle != null) {
             fxmlLoader.setResources(resourceBundle);
         }
