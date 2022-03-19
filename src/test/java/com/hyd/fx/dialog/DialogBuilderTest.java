@@ -59,7 +59,7 @@ public class DialogBuilderTest {
             ButtonType buttonType = new DialogBuilder()
                 .owner(AppPrimaryStage.getPrimaryStage())
                 .title("Hello!")
-                .body("/components/dialog-body.fxml", this)
+                .body(DialogBuilderTest.class.getResource("/components/dialog-body.fxml"), this)
                 .resizable(true)
                 .buttons(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL)
                 .onNoButtonClicked(Event::consume)

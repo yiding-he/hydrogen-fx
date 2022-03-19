@@ -10,14 +10,15 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class MainApplication extends Application {
+public class FxApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         Button button = new Button("打开对话框");
         button.setOnAction(event -> new DialogBuilder()
             .title("你好")
-            .body("/components/spring-boot-test.fxml")
+            .body(SpringBootMain.class.getResource("/components/spring-boot-test.fxml"))
+            .controllerFactory(SpringBootMain.applicationContext::getBean)
             .onButtonClicked(ButtonType.OK, e -> AlertDialog.info("OK", "You clicked OK."))
             .onCancelButtonClicked(e -> {
                 AlertDialog.error("No Cancel", "不能取消！");

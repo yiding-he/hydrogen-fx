@@ -6,21 +6,32 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class LayoutBuilderTest extends Application {
+import static javafx.application.Application.launch;
+
+public class LayoutBuilderTest {
 
     public static void main(String[] args) {
-        launch(LayoutBuilderTest.class);
+        launch(TestApp.class);
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = new LayoutBuilder() {{
-            vBox(
-                padding = 10, spacing = 10, alignment = Pos.CENTER,
-                LabelBuilder.label("Hello")
-            );
-        }}.build();
-        primaryStage.setScene(new Scene(root, 400, 300));
-        primaryStage.show();
+    public static class TestApp extends Application {
+
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+            Parent root = new LayoutBuilder() {{
+                vBox(
+                    padding = all(10), spacing = 10, alignment = Pos.CENTER,
+                    label(text = "Hello"),
+                    button(
+                        text = "你好", graph = icon("/logo.png", 16, 16),
+                        action = () -> System.out.println("Hello")
+                    )
+                );
+            }}.build();
+
+            primaryStage.setScene(new Scene(root, 400, 300));
+            primaryStage.show();
+        }
+
     }
 }

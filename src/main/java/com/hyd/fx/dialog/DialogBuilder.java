@@ -136,17 +136,6 @@ public class DialogBuilder {
         return this;
     }
 
-    @Deprecated
-    public DialogBuilder body(String fxml) {
-        return this;
-    }
-
-    @Deprecated
-    public DialogBuilder body(String fxml, Object controller) {
-        this.controller = controller;
-        return this;
-    }
-
     public DialogBuilder title(String title) {
         this.title = title;
         return this;
