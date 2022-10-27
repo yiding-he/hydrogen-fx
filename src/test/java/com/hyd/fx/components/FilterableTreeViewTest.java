@@ -8,7 +8,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import static com.hyd.fx.builders.TreeBuilder.treeItem;
-import static org.junit.Assert.*;
 
 /**
  * @author yiding.he

@@ -11,8 +11,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
@@ -22,8 +20,6 @@ import java.util.Optional;
  * @author yiding_he
  */
 public class AlertDialog {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AlertDialog.class);
 
     public static void error(String message) {
         alert(Alert.AlertType.ERROR, "错误", message);
@@ -49,23 +45,19 @@ public class AlertDialog {
 
     public static void alert(Alert.AlertType alertType, String title, String message) {
         AppThread.runUIThread(() -> {
-            try {
-                Alert alert = new Alert(alertType, message, ButtonType.OK);
-                alert.setTitle(title);
-                alert.setHeaderText(null);
+            Alert alert = new Alert(alertType, message, ButtonType.OK);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
 
-                if (AppPrimaryStage.getPrimaryStage() != null) {
-                    alert.initOwner(AppPrimaryStage.getPrimaryStage());
-                    alert.initModality(Modality.APPLICATION_MODAL);
-                }
-
-                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-                AppLogo.setStageLogo(stage);
-
-                alert.showAndWait();
-            } catch (Exception e) {
-                LOG.error("打开对话框失败", e);
+            if (AppPrimaryStage.getPrimaryStage() != null) {
+                alert.initOwner(AppPrimaryStage.getPrimaryStage());
+                alert.initModality(Modality.APPLICATION_MODAL);
             }
+
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            AppLogo.setStageLogo(stage);
+
+            alert.showAndWait();
         });
     }
 
@@ -121,25 +113,20 @@ public class AlertDialog {
     }
 
     public static ButtonType confirm(Alert.AlertType alertType, String title, String message, ButtonType... buttonTypes) {
-        try {
-            Alert alert = new Alert(alertType, message, buttonTypes);
-            alert.setTitle(title);
-            alert.setHeaderText(null);
+        Alert alert = new Alert(alertType, message, buttonTypes);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
 
-            if (AppPrimaryStage.getPrimaryStage() != null) {
-                alert.initOwner(AppPrimaryStage.getPrimaryStage());
-                alert.initModality(Modality.APPLICATION_MODAL);
-            }
-
-            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-            AppLogo.setStageLogo(stage);
-
-            Optional<ButtonType> result = alert.showAndWait();
-            return result.orElse(ButtonType.CANCEL);
-        } catch (Exception e) {
-            LOG.error("打开对话框失败", e);
-            return ButtonType.CANCEL;
+        if (AppPrimaryStage.getPrimaryStage() != null) {
+            alert.initOwner(AppPrimaryStage.getPrimaryStage());
+            alert.initModality(Modality.APPLICATION_MODAL);
         }
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        AppLogo.setStageLogo(stage);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.orElse(ButtonType.CANCEL);
     }
 
     //////////////////////////////////////////////////////////////
