@@ -49,10 +49,7 @@ public class AlertDialog {
             alert.setTitle(title);
             alert.setHeaderText(null);
 
-            if (AppPrimaryStage.getPrimaryStage() != null) {
-                alert.initOwner(AppPrimaryStage.getPrimaryStage());
-                alert.initModality(Modality.APPLICATION_MODAL);
-            }
+            initOwnerAndModality(alert);
 
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             AppLogo.setStageLogo(stage);
@@ -72,10 +69,7 @@ public class AlertDialog {
         alert.setHeaderText(null);
         alert.setContentText(message.trim());
 
-        if (AppPrimaryStage.getPrimaryStage() != null) {
-            alert.initOwner(AppPrimaryStage.getPrimaryStage());
-            alert.initModality(Modality.APPLICATION_MODAL);
-        }
+        initOwnerAndModality(alert);
 
         TextArea textArea = new TextArea(details);
         textArea.setEditable(false);
@@ -117,10 +111,7 @@ public class AlertDialog {
         alert.setTitle(title);
         alert.setHeaderText(null);
 
-        if (AppPrimaryStage.getPrimaryStage() != null) {
-            alert.initOwner(AppPrimaryStage.getPrimaryStage());
-            alert.initModality(Modality.APPLICATION_MODAL);
-        }
+        initOwnerAndModality(alert);
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         AppLogo.setStageLogo(stage);
@@ -152,16 +143,21 @@ public class AlertDialog {
         alert.getDialogPane().setContent(vBox);
         alert.setResizable(true);
 
-        if (AppPrimaryStage.getPrimaryStage() != null) {
-            alert.initOwner(AppPrimaryStage.getPrimaryStage());
-            alert.initModality(Modality.APPLICATION_MODAL);
-        }
+        initOwnerAndModality(alert);
 
         ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
         if (result == ButtonType.OK) {
             return control.getText();
         } else {
             return null;
+        }
+    }
+
+    private static void initOwnerAndModality(Alert alert) {
+        var primaryStage = AppPrimaryStage.getPrimaryStage();
+        if (primaryStage != null && primaryStage.getScene() != null) {
+            alert.initOwner(primaryStage);
+            alert.initModality(Modality.APPLICATION_MODAL);
         }
     }
 }
